@@ -11,6 +11,12 @@ namespace HelpSerralheiro
 
         public static string Usuarioentrou
         { get => usuarioentrou; set => usuarioentrou = value; }
+
+
+        private static string tipousuario;
+
+        public static string Tipousuario
+        { get => tipousuario; set => tipousuario = value; }
     }
 }
 

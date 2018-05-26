@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -62,9 +56,6 @@ namespace HelpSerralheiro
             if (conex.State == ConnectionState.Open)
             {
                 MessageBox.Show("Cadastrado com sucesso!");
-                Login log = new Login();
-                log.Show();
-                this.Close();
             }
             else{
                 MessageBox.Show("Erro ao cadastrar!");
@@ -76,9 +67,9 @@ namespace HelpSerralheiro
 
         private void btnFechar_Click(object sender, EventArgs e)
         {
-            Login log = new Login();
-            log.Show();
             this.Close();
+            Menu menu = new Menu();
+            menu.Show();
         }
     }
 }

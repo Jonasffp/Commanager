@@ -20,11 +20,6 @@ namespace HelpSerralheiro
             InitializeComponent();
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void btnFechar_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -57,12 +52,10 @@ namespace HelpSerralheiro
                 MessageBox.Show("Nome ou Senha Incorretos!");
             }
             conex.Close();
-
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            
             FrmCadastro cad = new FrmCadastro();
             cad.Show();
             this.Close();

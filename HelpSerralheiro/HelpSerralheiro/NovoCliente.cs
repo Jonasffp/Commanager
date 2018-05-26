@@ -37,7 +37,6 @@ namespace HelpSerralheiro
             celular = txtCelular.Text.Trim();
             observacoes = txtObservacoes.Text.Trim();
 
-            MessageBox.Show("" + nome + cpf + rg + dataNascimento + rua + bairro + cidade + cep + uf + complemento + email + telefone + celular + observacoes);
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
@@ -49,7 +48,10 @@ namespace HelpSerralheiro
             {
                 MessageBox.Show("Cadastrado com sucesso!");
                 txtNome.Clear(); txtCPF.Clear(); txtRG.Clear(); txtDataNascimento.Text = Convert.ToString(DateTime.Now); txtRua.Clear(); txtBairro.Clear(); txtCidade.Clear(); txtCEP.Clear(); txtUF.Clear(); txtComplemento.Clear();txtEmail.Clear();txtTelefone.Clear(); txtCelular.Clear(); txtObservacoes.Clear();
+                SubClientes sub = new SubClientes();
+                sub.Show();
             }
+            
             else
             {
                 MessageBox.Show("Erro ao cadastrar!");

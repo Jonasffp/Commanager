@@ -23,6 +23,13 @@ public static string Tipousuario
     set { ClassInfo.tipousuario = value; }
 }
 
+private static string idClienteGlobal;
+
+public static string IdClienteGlobal
+{
+    get { return ClassInfo.idClienteGlobal; }
+    set { ClassInfo.idClienteGlobal = value; }
+}
 
     }
 }

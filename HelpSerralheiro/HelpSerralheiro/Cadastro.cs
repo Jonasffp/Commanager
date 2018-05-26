@@ -11,10 +11,7 @@ namespace HelpSerralheiro
         public FrmCadastro()
         {
             InitializeComponent();
-
-
         }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -56,6 +53,9 @@ namespace HelpSerralheiro
             if (conex.State == ConnectionState.Open)
             {
                 MessageBox.Show("Cadastrado com sucesso!");
+                this.Close();
+                Menu men = new Menu();
+                men.Show();
             }
             else{
                 MessageBox.Show("Erro ao cadastrar!");

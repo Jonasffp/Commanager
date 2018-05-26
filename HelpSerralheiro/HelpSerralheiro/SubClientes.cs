@@ -23,5 +23,12 @@ namespace HelpSerralheiro
             NovoCliente nv = new NovoCliente();
             nv.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            ConsultarClientes cc = new ConsultarClientes();
+            cc.Show();
+        }
     }
 }

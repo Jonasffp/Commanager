@@ -35,5 +35,11 @@ namespace HelpSerralheiro
             cons.Show();
             this.Close();
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lblHora.Text = DateTime.Now.ToLongTimeString();
+            lbldata.Text = DateTime.Now.ToLongDateString();
+        }
     }
 }

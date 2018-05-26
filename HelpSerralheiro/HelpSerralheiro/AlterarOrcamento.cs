@@ -16,7 +16,7 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-        int ValorItens, ValorFrete, Desconto;
+        int ValorItens, ValorFrete, Desconto, IdProd;
 
         private void btSair_Click(object sender, EventArgs e)
         {
@@ -161,9 +161,16 @@ namespace HelpSerralheiro
             }
             if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Produto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // pega o valor do id na ccoluna selecionada
-                int IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
-
+                try
+                {
+                    // pega o valor do id na ccoluna selecionada
+                    IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
+                }
+                catch
+                {
+                    MessageBox.Show("Por favor clique sobre o produto que deseja excluir!");
+                    return;
+                }
                 try
                 {
                     //string de conexão mysql
@@ -176,7 +183,7 @@ namespace HelpSerralheiro
                     Query.ExecuteNonQuery();
 
                     //confirmação da exclusão
-                    MessageBox.Show("Registro excluido com sucesso! " + IdProd);
+                    MessageBox.Show("Registro excluido com sucesso! ");
 
                     btnOculto_Click(this, new EventArgs());
                 }
@@ -273,6 +280,58 @@ namespace HelpSerralheiro
             {
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
+            }
+        }
+        int virgula = 1, i = 2;
+
+        private void txtDescontoOrcamento_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Se a tecla digitada não for número e nem backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = true;
+            }
+
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 1)
+            {
+                i = 2;
+                return;
+            }
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 0)
+            {
+                i = 1;
+            }
+
+            if (e.KeyChar == ',' && virgula != 1)
+            {
+                e.Handled = false;
+                virgula = 1;
+                return;
+            }
+
+            if (virgula == 1 && i == 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                virgula = 0;
+                return;
+            }
+
+
+
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 2)
+            {
+                e.Handled = true;
+                //SendKeys.SendWait("{BACKSPACE}");
+            }
+
+            if (virgula == 1 && i > 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                i = i - 1;
+                return;
             }
         }
 

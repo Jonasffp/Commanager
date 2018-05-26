@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Collections;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Threading;
 
 namespace HelpSerralheiro
 {
@@ -16,7 +20,6 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-
         private void btCancelar_Click(object sender, EventArgs e)
         {
             ConsultaDespesas cons = new ConsultaDespesas();
@@ -35,9 +38,8 @@ namespace HelpSerralheiro
             {
                 string nomeDespesa = txtDespesa.Text;
                 string dataVencimento = Convert.ToDateTime(txtDataVencimento.Text).ToString("yyyy/MM/dd");
-                decimal valorDespesa = Convert.ToDecimal(txtValorDespesa.Text);
+                string valorDespesa = txtValorDespesa.Text.Replace(',', '.');
                 string observacoes = txtObservacoes.Text;
-
                 string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
                 MySqlConnection conex = new MySqlConnection(Config);
@@ -57,6 +59,7 @@ namespace HelpSerralheiro
                     MessageBox.Show("Erro ao alterar!");
                 }
                 conex.Close();
+                MessageBox.Show("" + valorDespesa);
             }
         }
 
@@ -90,13 +93,58 @@ namespace HelpSerralheiro
 
             finally { conex.Close(); }
         }
-
+        int virgula = 1, i = 2;
         private void txtValorDespesa_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar))
+             
+            //Se a tecla digitada não for número e nem backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
             {
+                //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
             }
+
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 1)
+            {
+                i = 2;
+                return;
+            }
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 0)
+            {
+                i = 1;
+            }
+
+            if (e.KeyChar == ',' && virgula != 1)
+            {
+                e.Handled = false;
+                virgula = 1;
+                return;
+            }
+
+            if (virgula == 1 && i==0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                virgula = 0;
+                return;
+            }
+
+
+
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 2)
+            {
+                e.Handled = true;
+                //SendKeys.SendWait("{BACKSPACE}");
+            }
+            
+            if (virgula == 1 && i > 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                i = i - 1;
+                return;
+            }
+             
         }
     }
 }

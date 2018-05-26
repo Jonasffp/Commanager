@@ -22,7 +22,6 @@ namespace HelpSerralheiro
             
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
-
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
             MySqlCommand Query = new MySqlCommand("SELECT * FROM agenda WHERE id = '" + ClassInfo.IdAgendaGlobal + "';", conex);
@@ -33,28 +32,13 @@ namespace HelpSerralheiro
                 MySqlDataReader leitor = Query.ExecuteReader();
 
                 leitor.Read(); //lê a primeira row da pesquisa
+                txtObs.Text = leitor["Observacoes"].ToString();
                 txtVendedor.Text = leitor["Nome"].ToString();
                 txtLembrete.Text = leitor["Lembrete"].ToString();
                 txtVendedor.Text = leitor["Vendedor"].ToString();
                 txtData.Text = leitor["Data"].ToString();
                 txtHora.Text = leitor["Hora"].ToString();
-                txtObs.Text = leitor["Observacoes"].ToString();
-
-
-                MySqlCommand Query2 = new MySqlCommand("SELECT Nome FROM funcionario;", conex);
-                //define o tipo do comando
-                Query2.CommandType = CommandType.Text;
-                Query2.ExecuteNonQuery();
-
-                MySqlDataReader leitor2 = Query2.ExecuteReader();
-
-                for (int i = 0; leitor2.Read() != false; i++)
-                {
-                    string ig = leitor2["Nome"].ToString();
-                    txtVendedor.Items.Add(ig);
-                }
-
-                conex.Close();
+                
                 
             }
 
@@ -78,7 +62,6 @@ namespace HelpSerralheiro
                 string ig = leitor3["Nome"].ToString();
                 txtVendedor.Items.Add(ig);
             }
-
         }
 
         private void button1_Click(object sender, EventArgs e)

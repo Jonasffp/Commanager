@@ -16,7 +16,9 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-        double ValorFrete, ValorItens, Desconto;
+        int IdProd;
+        Decimal ValorFrete, ValorItens, Desconto;
+        int virgula = 1, i = 2;
         private void txtDescontoOrcamento_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Se a tecla digitada não for número e nem backspace
@@ -25,8 +27,49 @@ namespace HelpSerralheiro
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
             }
-        }
 
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 1)
+            {
+                i = 2;
+                return;
+            }
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 0)
+            {
+                i = 1;
+            }
+
+            if (e.KeyChar == ',' && virgula != 1)
+            {
+                e.Handled = false;
+                virgula = 1;
+                return;
+            }
+
+            if (virgula == 1 && i == 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                virgula = 0;
+                return;
+            }
+
+
+
+            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 2)
+            {
+                e.Handled = true;
+                //SendKeys.SendWait("{BACKSPACE}");
+            }
+
+            if (virgula == 1 && i > 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                i = i - 1;
+                return;
+            }
+        }
+        int virgula2 = 1, i2 = 2;
         private void txtFreteOrcamento_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Se a tecla digitada não for número e nem backspace
@@ -35,49 +78,105 @@ namespace HelpSerralheiro
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
             }
+
+            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 1)
+            {
+                i2 = 2;
+                return;
+            }
+            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 0)
+            {
+                i2 = 1;
+            }
+
+            if (e.KeyChar == ',' && virgula2 != 1)
+            {
+                e.Handled = false;
+                virgula2 = 1;
+                return;
+            }
+
+            if (virgula2 == 1 && i2 == 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                virgula2 = 0;
+                return;
+            }
+
+
+
+            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 2)
+            {
+                e.Handled = true;
+                //SendKeys.SendWait("{BACKSPACE}");
+            }
+
+            if (virgula2 == 1 && i2 > 0 && e.KeyChar == 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = false;
+                i2 = i2 - 1;
+                return;
+            }
         }
 
         private void txtDescontoOrcamento_KeyUp(object sender, KeyEventArgs e)
         {
-            if (txtDescontos.Text != "")
+            if (txtDescontos.Text != "" && txtFrete.TextLength > 0 && txtFrete.Text != "," && txtDescontos.Text != "," )
             {
-                Desconto = Convert.ToInt32(txtDescontos.Text);
-                ValorFrete = Convert.ToInt32(txtFrete.Text);
-                ValorItens = Convert.ToInt32(txtValorItens.Text);
+                Desconto = Convert.ToDecimal(txtDescontos.Text);
+                ValorFrete = Convert.ToDecimal(txtFrete.Text);
+                ValorItens = Convert.ToDecimal(txtValorItens.Text);
                 txtValorTotal.Text = Convert.ToString(ValorFrete + ValorItens - Desconto);
+            }
+            else
+            {
+                MessageBox.Show("É necessário que todos os campos referentes a valores estejam preenchidos corretamente para que o cálculo possa ser feito !");
+                if (txtFrete.TextLength == 0 || txtFrete.Text == ",") { txtFrete.Text = ("0"); }
+                if (txtDescontos.TextLength == 0 || txtDescontos.Text == ",") { txtDescontos.Text = ("0"); }
             }
         }
 
         private void txtFreteOrcamento_KeyUp(object sender, KeyEventArgs e)
         {
-            if (txtFrete.TextLength > 0)
+            if (txtFrete.TextLength > 0 && txtDescontos.TextLength > 0 && txtFrete.Text != "," && txtDescontos.Text != ",")
             {
-                Desconto = Convert.ToInt32(txtDescontos.Text);
-                ValorFrete = Convert.ToInt32(txtFrete.Text);
-                ValorItens = Convert.ToInt32(txtValorItens.Text);
+                Desconto = Convert.ToDecimal(txtDescontos.Text);
+                ValorFrete = Convert.ToDecimal(txtFrete.Text);
+                ValorItens = Convert.ToDecimal(txtValorItens.Text);
                 txtValorTotal.Text = Convert.ToString(ValorFrete + ValorItens - Desconto);
             }
             else
             {
-                MessageBox.Show("É necessário que todos os campos referentes a valores estejam preenchidos, para que o calculo possa ser feito !");
+                MessageBox.Show("É necessário que todos os campos referentes a valores estejam preenchidos corretamente para que o cálculo possa ser feito !");
+                if (txtFrete.TextLength == 0 || txtFrete.Text == ",") { txtFrete.Text = ("0"); }
+                else if (txtDescontos.TextLength == 0 || txtDescontos.Text == ",") { txtDescontos.Text = ("0"); }
             }
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
-            if (dgvOrcamento.SelectedRows.Count <= 0)
+            if (dgvOrcamento.SelectedRows.Count <= 0 )
             {
                 MessageBox.Show("Não há registro selecionado");
                 return;
 
             }
-            if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Produto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Deseja excluir o produto selecionado?", "Excluir - Produto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // pega o valor do id na ccoluna selecionada
-                int IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
+                try
+                {
+                    // pega o valor do id na ccoluna selecionada
+                    IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
+                }
+                catch { MessageBox.Show("Por favor clique sobre o produto que deseja excluir do orçamento!");
+                    return;
+                }
 
                 try
                 {
+ 
                     //string de conexão mysql
                     string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
                     MySqlConnection conex = new MySqlConnection(Config);
@@ -97,7 +196,7 @@ namespace HelpSerralheiro
                 catch (Exception)
                 {
                     //erro na exclusão aparecerá essa mensagem
-                    MessageBox.Show("Erro ao excluir o registro!");
+                    MessageBox.Show("Erro ao excluir o produto!");
 
                 }
 
@@ -130,23 +229,21 @@ namespace HelpSerralheiro
             //atribui o datatable ao datagridview para exibir o resultado
             dgvOrcamento.DataSource = produto;
 
-            for (int i = 0; i < dgvOrcamento.Rows.Count - 1; i++)
+            for (int i = 0; i < dgvOrcamento.Rows.Count; i++)
             {
+                ValorItens += Convert.ToDecimal(dgvOrcamento.Rows[i].Cells[6].Value);
 
-                ValorItens += Convert.ToDouble(dgvOrcamento.Rows[i].Cells[6].Value);
-
-                ValorFrete += Convert.ToDouble(dgvOrcamento.Rows[i].Cells[8].Value);
+                ValorFrete += Convert.ToDecimal(dgvOrcamento.Rows[i].Cells[8].Value);
             }
             dgvOrcamento.Columns[0].Visible = false;
             dgvOrcamento.Columns[7].Visible = false;
-
 
             txtValorItens.Text = Convert.ToString(ValorItens);
             txtFrete.Text = Convert.ToString(ValorFrete);
 
 
 
-            Desconto = Convert.ToInt32(txtDescontos.Text);
+            Desconto = Convert.ToDecimal(txtDescontos.Text);
             txtValorTotal.Text = Convert.ToString((ValorFrete + ValorItens) - Desconto);
             conex.Close();
         }
@@ -173,10 +270,10 @@ namespace HelpSerralheiro
 
 
 
-            double desconto = Convert.ToDouble(txtDescontos.Text.Trim());
-            double valorItens = Convert.ToDouble(txtValorItens.Text.Trim());
-            double frete = Convert.ToDouble(txtFrete.Text.Trim());
-            double valorTotal = Convert.ToDouble(txtValorTotal.Text.Trim());
+            string desconto = Convert.ToString(txtDescontos.Text.Replace(',', '.'));
+            string valorItens = Convert.ToString(txtValorItens.Text.Replace(',', '.'));
+            string frete = Convert.ToString(txtFrete.Text.Replace(',', '.'));
+            string valorTotal = Convert.ToString(txtValorTotal.Text.Replace(',', '.'));
 
 
 
@@ -270,6 +367,10 @@ namespace HelpSerralheiro
 
         private void NovoOrcamento_Load(object sender, EventArgs e)
         {
+            txtValorItens.Text = "0,00";
+            txtDescontos.Text = "0,00";
+            txtFrete.Text = "0,00";
+            txtValorTotal.Text = "0,00";
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);

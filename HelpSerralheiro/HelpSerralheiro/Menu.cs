@@ -30,7 +30,7 @@ namespace HelpSerralheiro
             nomeuser = Convert.ToString(retorno);
             label2.Text = (nomeuser);
 
-           
+
         }
 
         private void btnFechar_Click(object sender, EventArgs e)
@@ -38,7 +38,7 @@ namespace HelpSerralheiro
             Application.Exit();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        public void timer1_Tick(object sender, EventArgs e)
         {
             lblHora.Text = DateTime.Now.ToLongTimeString();
             lbldata.Text = DateTime.Now.ToLongDateString();
@@ -128,4 +128,5 @@ namespace HelpSerralheiro
             lg.Show();
         }
     }
+
 }

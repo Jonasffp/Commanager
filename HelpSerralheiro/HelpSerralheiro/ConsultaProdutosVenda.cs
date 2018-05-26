@@ -42,6 +42,7 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutosVenda.DataSource = produtos;
+            dgvProdutosVenda.Columns[6].Visible = false;
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
@@ -66,6 +67,7 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutosVenda.DataSource = produtos;
+            dgvProdutosVenda.Columns[6].Visible = false;
         }
 
         private void txtPesquisaProduto_KeyPress(object sender, KeyPressEventArgs e)
@@ -107,9 +109,9 @@ namespace HelpSerralheiro
                 string marca = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[3].Value);
                 string categoria = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[4].Value);
                 string fornecedor = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[5].Value);
-                int valorCusto = Convert.ToInt32(dgvProdutosVenda.CurrentRow.Cells[6].Value);
-                int valorVenda = Convert.ToInt32(dgvProdutosVenda.CurrentRow.Cells[7].Value);
-                int frete = Convert.ToInt32(dgvProdutosVenda.CurrentRow.Cells[8].Value);
+                string valorCusto = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[6].Value).Replace(',', '.');
+                string valorVenda = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[7].Value).Replace(',', '.');
+                string frete = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[8].Value).Replace(',', '.');
                 string observacoes = Convert.ToString(dgvProdutosVenda.CurrentRow.Cells[9].Value);
 
                 string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
@@ -123,10 +125,9 @@ namespace HelpSerralheiro
                 Query.ExecuteNonQuery();
 
                 var form = Application.OpenForms["NovaVenda"] as NovaVenda;
-                if (form != null)//se encontrou o form principal aberto
-                {
-                    form.btnOculto_Click(this, new EventArgs());
-                }
+               
+                form.btnOculto_Click(this, new EventArgs());
+
 
                 this.Close();
 

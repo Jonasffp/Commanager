@@ -38,6 +38,8 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutos.DataSource = produtos;
+
+
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)

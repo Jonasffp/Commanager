@@ -50,7 +50,7 @@ namespace HelpSerralheiro
 
                     //confirmação da exclusão
                     MessageBox.Show("Registro excluido com sucesso! " + despesaId);
-                    btPesquisar.PerformClick();
+                    btnPesquisar.PerformClick();
                 }
                 catch (Exception)
                 {
@@ -133,6 +133,11 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvDespesas.DataSource = despesa;
+
+            foreach (DataGridViewColumn column in dgvDespesas.Columns)
+            {
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
         }
     }
 }

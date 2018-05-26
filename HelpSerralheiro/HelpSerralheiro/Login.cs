@@ -47,12 +47,23 @@ namespace HelpSerralheiro
             if (Verifica == true)
             {
                 MessageBox.Show("Logado");
+                Menu menu = new HelpSerralheiro.Menu();
+                menu.Show();
+                Close();
             }
             else{
                 MessageBox.Show("Nome ou Senha Incorretos!");
             }
             conex.Close();
 
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            
+            FrmCadastro cad = new FrmCadastro();
+            cad.Show();
+            this.Close();
         }
     }
 }

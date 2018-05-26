@@ -114,6 +114,9 @@ namespace HelpSerralheiro
 
         private void btnAlterarRegistro_Click(object sender, EventArgs e)
         {
+
+            
+
             if (dgvFornecedor.SelectedRows.Count <= 0)
             {
                 MessageBox.Show("Não há registro selecionado");
@@ -128,7 +131,7 @@ namespace HelpSerralheiro
                 this.Close();
                 AlterarFornecedor al = new AlterarFornecedor();
                 al.Show();
-
+            
             }
         }
     }

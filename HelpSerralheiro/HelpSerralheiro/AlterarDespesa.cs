@@ -24,17 +24,12 @@ namespace HelpSerralheiro
             this.Close();
         }
 
-        private void btLimpar_Click(object sender, EventArgs e)
-        {
-            txtDespesa.Clear(); txtObservacoes.Clear(); txtValorDespesa.Clear(); txtDataVencimento.Text = Convert.ToString(DateTime.Now);
-        }
-
         private void btSalvar_Click(object sender, EventArgs e)
         {
 
-            if (txtDespesa.TextLength < 1)
+            if (txtDespesa.TextLength < 1 || txtValorDespesa.TextLength < 1)
             {
-                MessageBox.Show("Por favor, preencha adequadamente o campo referente ao nome do lembrete !");
+                MessageBox.Show("Por favor, preencha adequadamente o campo referente ao nome do funcionário e do lembrete !");
             }
             else
             {

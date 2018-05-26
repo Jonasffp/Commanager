@@ -16,7 +16,6 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-
         private void AlterarFornecedor_Load(object sender, EventArgs e)
         {
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
@@ -75,48 +74,59 @@ namespace HelpSerralheiro
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            String nomeFornecedor = txtNomeFornecedor.Text;
-            String seguimentoFornecedor = cbSegmentoFornecedor.Text;
-            String apelidoFornecedor = txtApelido.Text;
-            String nomeruaFornecedor = txtNomeRuaFornecedor.Text;
-            String numeroRua = txtnumeroRua.Text;
-            String bairroFornecedor = txtBairroFornecedor.Text;
-            String cidadeFornecedor = txtCidadeFornecedor.Text;
-            String ufFornecedor = txtufFornecedor.Text;
-            String cepFornecedor = txtCEPFornecedor.Text;
-            String telefoneFornecedor = txtTelefoneFornecedor.Text;
-            String telefone2Fornecedor = txtTelefone2Fornecedor.Text;
-            String celularFornecedor = txtCelularFornecedor.Text;
-            String celular2Fornecedor = txtCelular2Fornecedor.Text;
-            String complementoFornecedor = txtComplementoFornecedor.Text;
-            String emailFornecedor = txtEmailFornecedor.Text;
-            String nomerepresentanteFornecedor = txtNomeRepresentanteFornecedor.Text;
-            String cnpjFornecedor = txtCNPJFornecedor.Text;
-            String numieFornecedor = txtNumIEFornecedor.Text;
-            String obsFornecedor = txtOBSFornecedor.Text;
-            String emailrepresentanteFornecedor = txtEmailRepresentante.Text;
-            String dataCadastro = DataCadastro.Text;
 
-            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+                String nomeFornecedor = txtNomeFornecedor.Text;
+                String seguimentoFornecedor = cbSegmentoFornecedor.Text;
+                String apelidoFornecedor = txtApelido.Text;
+                String nomeruaFornecedor = txtNomeRuaFornecedor.Text;
+                String numeroRua = txtnumeroRua.Text;
+                String bairroFornecedor = txtBairroFornecedor.Text;
+                String cidadeFornecedor = txtCidadeFornecedor.Text;
+                String ufFornecedor = txtufFornecedor.Text;
+                String cepFornecedor = txtCEPFornecedor.Text;
+                String telefoneFornecedor = txtTelefoneFornecedor.Text;
+                String telefone2Fornecedor = txtTelefone2Fornecedor.Text;
+                String celularFornecedor = txtCelularFornecedor.Text;
+                String celular2Fornecedor = txtCelular2Fornecedor.Text;
+                String complementoFornecedor = txtComplementoFornecedor.Text;
+                String emailFornecedor = txtEmailFornecedor.Text;
+                String nomerepresentanteFornecedor = txtNomeRepresentanteFornecedor.Text;
+                String cnpjFornecedor = txtCNPJFornecedor.Text;
+                String numieFornecedor = txtNumIEFornecedor.Text;
+                String obsFornecedor = txtOBSFornecedor.Text;
+                String emailrepresentanteFornecedor = txtEmailRepresentante.Text;
+                String dataCadastro = DataCadastro.Text;
 
-            MySqlConnection conex = new MySqlConnection(Config);
-            conex.Open();
-            MySqlCommand Query = new MySqlCommand("UPDATE fornecedor SET NomeCompleto='" + nomeFornecedor + "', NomeFantasia='" + apelidoFornecedor + "', DataCadastro='" + dataCadastro + "', CNPJ='" + cnpjFornecedor + "', IE='" + numieFornecedor + "', Segmento='" + seguimentoFornecedor + "', Email='" + emailFornecedor + "', Rua='" + nomeruaFornecedor + "', NumeroRua='" + numeroRua + "', Bairro='" + bairroFornecedor + "', Cidade='" + cidadeFornecedor + "', UF='" + ufFornecedor + "', CEP='" + cepFornecedor + "', Telefone='" + telefoneFornecedor + "', Telefone2='" + telefone2Fornecedor + "', Celular='" + celularFornecedor + "', Celular2='" + celular2Fornecedor + "', Complemento='" + complementoFornecedor + "', NomeRepresentante='" + nomerepresentanteFornecedor + "', EmailRepresentante='" + emailrepresentanteFornecedor + "', Observacoes='" + obsFornecedor + "' WHERE Id ="+ClassInfo.IdFornecedorGlobal+";", conex);
-            Query.ExecuteNonQuery();
-            Query.Connection = conex;
-            if (conex.State == ConnectionState.Open)
-            {
-                MessageBox.Show("Alterado com sucesso!"+celularFornecedor+celular2Fornecedor+telefoneFornecedor+telefone2Fornecedor);
-                ConsultaFornecedor cons = new ConsultaFornecedor();
-                cons.Show();
-                this.Close();
+                if (txtNomeFornecedor.TextLength < 1 || txtApelido.TextLength < 1 || txtEmailFornecedor.TextLength < 1 || txtNomeRepresentanteFornecedor.TextLength < 1 || txtEmailRepresentante.TextLength < 1)
+                {
+                    MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao Nome Completo, Nome Fantasia, Email, Nome Representante e Emai Representante !");
+                }
+                else
+                {
+
+                string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("UPDATE fornecedor SET NomeCompleto='" + nomeFornecedor + "', NomeFantasia='" + apelidoFornecedor + "', DataCadastro='" + dataCadastro + "', CNPJ='" + cnpjFornecedor + "', IE='" + numieFornecedor + "', Segmento='" + seguimentoFornecedor + "', Email='" + emailFornecedor + "', Rua='" + nomeruaFornecedor + "', NumeroRua='" + numeroRua + "', Bairro='" + bairroFornecedor + "', Cidade='" + cidadeFornecedor + "', UF='" + ufFornecedor + "', CEP='" + cepFornecedor + "', Telefone='" + telefoneFornecedor + "', Telefone2='" + telefone2Fornecedor + "', Celular='" + celularFornecedor + "', Celular2='" + celular2Fornecedor + "', Complemento='" + complementoFornecedor + "', NomeRepresentante='" + nomerepresentanteFornecedor + "', EmailRepresentante='" + emailrepresentanteFornecedor + "', Observacoes='" + obsFornecedor + "' WHERE Id =" + ClassInfo.IdFornecedorGlobal + ";", conex);
+                Query.ExecuteNonQuery();
+                Query.Connection = conex;
+                if (conex.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("Alterado com sucesso!");
+                    ConsultaFornecedor cons = new ConsultaFornecedor();
+                    cons.Show();
+                    this.Close();
+                }
+
+                else
+                {
+                    MessageBox.Show("Erro ao alterar!");
+                }
+                conex.Close();
+                }
             }
 
-            else
-            {
-                MessageBox.Show("Erro ao alterar!");
-            }
-            conex.Close();
         }
     }
-}
+

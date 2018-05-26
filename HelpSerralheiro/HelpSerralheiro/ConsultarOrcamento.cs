@@ -61,7 +61,7 @@ namespace HelpSerralheiro
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
 
-            MySqlCommand Query = new MySqlCommand("SELECT * FROM orcamento WHERE Cliente LIKE '%" + nome + "%';", conex);
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM orcamentos WHERE Cliente LIKE '%" + nome + "%';", conex);
             //define o tipo do comando
             Query.CommandType = CommandType.Text;
             //cria um dataadapter
@@ -118,18 +118,18 @@ namespace HelpSerralheiro
                     conex.Open();
 
                     // executa a query de deletar com a variavel do id selecionado na datagrid
-                    MySqlCommand Query = new MySqlCommand("DELETE FROM cliente WHERE id=" + orcamentoId + ";", conex);
+                    MySqlCommand Query = new MySqlCommand("DELETE FROM orcamentos WHERE Id=" + orcamentoId + ";", conex);
                     Query.ExecuteNonQuery();
 
                     //confirmação da exclusão
-                    MessageBox.Show("Registro excluido com sucesso! " + orcamentoId);
+                    MessageBox.Show("Registro de orçamento excluido com sucesso! " + orcamentoId);
                     btnPesquisar.PerformClick();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //erro na exclusão aparecerá essa mensagem
-                    MessageBox.Show("Erro ao excluir o registro!");
+                    MessageBox.Show("Erro ao excluir o registro!"+ ex);
 
                 }
 

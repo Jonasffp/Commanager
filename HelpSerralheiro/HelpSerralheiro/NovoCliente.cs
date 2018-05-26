@@ -16,7 +16,7 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-
+        int cont;
         private void button1_Click(object sender, EventArgs e)
         {
             String nome,numerorua, cpf, rg, dataNascimento, rua, bairro, cidade, cep, uf, complemento, email, telefone, celular, observacoes;
@@ -38,9 +38,9 @@ namespace HelpSerralheiro
             observacoes = txtObservacoes.Text.Trim();
 
 
-            if (txtNome.TextLength < 1 || txtCPF.TextLength < 1 || txtRG.TextLength < 1 || txtEmail.TextLength < 1)
+            if (txtNome.TextLength < 1 || txtEmail.TextLength < 1)
             {
-                MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao nome, CPF, RG e email !");
+                MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao nome e email !");
             }
             else
             {
@@ -127,12 +127,16 @@ namespace HelpSerralheiro
 
         private void txtCEP_KeyPress_1(object sender, KeyPressEventArgs e)
         {
-                                 
+            cont++;                    
             //Se a tecla digitada não for número e nem backspace
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
             {
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
+            }
+            if (e.KeyChar == 08)
+            {
+                cont--;
             }
 
 
@@ -234,6 +238,11 @@ namespace HelpSerralheiro
             {
                 MessageBox.Show("Campos de Cep ou UF estão incompletos");
             }
+        }
+
+        private void txtRG_KeyDown(object sender, KeyEventArgs e)
+        {
+          
         }
         
 

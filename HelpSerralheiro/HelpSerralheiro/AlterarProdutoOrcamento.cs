@@ -44,7 +44,7 @@ namespace HelpSerralheiro
                 MySqlConnection conex = new MySqlConnection(Config);
                 conex.Open();
 
-                MySqlCommand Query = new MySqlCommand("INSERT INTO produtosorcamentos (idProduto, IdVenda,Nome,UnidadeMedida,Marca,Categoria,Valor,ValorCusto,Frete,Observacoes)" + "VALUES('" + id + "', '" + ClassInfo.IdVendaGlobal + "', '" + nome + "', '" + unidade + "', '" + marca + "', '" + categoria + "', '" + valorVenda + "', '" + valorCusto + "', '" + frete + "', '" + observacoes + "');", conex);
+                MySqlCommand Query = new MySqlCommand("INSERT INTO produtosorcamentos (IdProduto, IdOrcamento, Nome,UnidadeMedida,Marca,Categoria,Valor,ValorCusto,Frete,Observacoes)" + "VALUES('" + id + "', '" + ClassInfo.IdVendaGlobal + "', '" + nome + "', '" + unidade + "', '" + marca + "', '" + categoria + "', '" + valorVenda + "', '" + valorCusto + "', '" + frete + "', '" + observacoes + "');", conex);
                 //define o tipo do comando
                 Query.CommandType = CommandType.Text;
                 Query.ExecuteNonQuery();

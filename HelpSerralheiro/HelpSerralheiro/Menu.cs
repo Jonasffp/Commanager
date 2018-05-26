@@ -120,14 +120,12 @@ namespace HelpSerralheiro
             sub.Show();
             this.Close();
         }
-        private void Menu_LocationChanged(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void Menu_Load(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            
+            this.Close();
+            Login lg = new Login();
+            lg.Show();
         }
     }
 }

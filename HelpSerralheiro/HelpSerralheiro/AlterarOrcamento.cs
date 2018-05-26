@@ -16,7 +16,7 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-        double ValorItens, ValorFrete, Desconto;
+        int ValorItens, ValorFrete, Desconto;
 
         private void btSair_Click(object sender, EventArgs e)
         {
@@ -32,11 +32,17 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
+            MySqlConnection conex2 = new MySqlConnection(Config);
+            conex2.Open();
+
+
             MySqlCommand Query = new MySqlCommand("SELECT * FROM orcamentos WHERE Id = '" + ClassInfo.IdVendaGlobal + "';", conex);
 
             MySqlCommand Query2 = new MySqlCommand("SELECT * FROM produtosorcamentos WHERE IdOrcamento='" + ClassInfo.IdVendaGlobal + "';", conex);
             //define o tipo do comando
             Query2.CommandType = CommandType.Text;
+
+
             //cria um dataadapter
             MySqlDataAdapter da = new MySqlDataAdapter(Query2);
 
@@ -48,20 +54,51 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvOrcamento.DataSource = produtos;
+
             try
             {
+                ValorItens = 0;
+                ValorFrete = 0; 
+                Desconto = 0;
                 MySqlDataReader leitor = Query.ExecuteReader();
 
                 leitor.Read(); //lê a primeira row da pesquisa
                 txtClienteOrcamento.Text = leitor["Cliente"].ToString();
-                txtVendedorOrcamento.Text = leitor["Vendedor"].ToString();
-                txtValorItensOrcamento.Text = leitor["ValorItens"].ToString();
-                txtFreteOrcamento.Text = leitor["ValorFrete"].ToString();
-                txtTotalOrcamento.Text = leitor["ValorTotal"].ToString();
+                txtVendedor.Text = leitor["Vendedor"].ToString();
+                //txtValorItensOrcamento.Text = leitor["ValorItens"].ToString();
+                //txtFreteOrcamento.Text = leitor["ValorFrete"].ToString();
+                //txtTotalOrcamento.Text = leitor["ValorTotal"].ToString();
                 txtDescontoOrcamento.Text = leitor["Desconto"].ToString();
+
+                MySqlCommand Query4 = new MySqlCommand("SELECT Nome FROM funcionario;", conex2);
+                //define o tipo do comando
+                Query4.CommandType = CommandType.Text;
+                Query4.ExecuteNonQuery();
+
+                MySqlDataReader leitor4 = Query4.ExecuteReader();
+
+                for (int i = 0; leitor4.Read() != false; i++)
+                {
+                    string ig = leitor4["Nome"].ToString();
+                    txtVendedor.Items.Add(ig);
+                }
+                conex2.Close();
+                for (int i = 0; i < dgvOrcamento.Rows.Count - 1; i++)
+                {
+
+                    ValorItens += Convert.ToInt32(dgvOrcamento.Rows[i].Cells[7].Value);
+
+                    ValorFrete += Convert.ToInt32(dgvOrcamento.Rows[i].Cells[9].Value);
+                }
+
+                txtValorItensOrcamento.Text = Convert.ToString(ValorItens);
+                txtFreteOrcamento.Text = Convert.ToString(ValorFrete);
                 
+                Desconto = Convert.ToInt32(txtDescontoOrcamento.Text);
+                txtTotalOrcamento.Text = Convert.ToString((ValorFrete + ValorItens) - Desconto);
 
-
+                dgvOrcamento.Columns[0].Visible = false;
+                dgvOrcamento.Columns[8].Visible = false;
             }
 
             catch (Exception ex)
@@ -71,16 +108,19 @@ namespace HelpSerralheiro
 
 
             finally { conex.Close(); }
+
+           
+
         }
 
         private void btnGerar_Click(object sender, EventArgs e)
         {
             String comprador = txtClienteOrcamento.Text.Trim();
-            String vendedor = txtVendedorOrcamento.Text.Trim();
-            double desconto = Convert.ToDouble(txtDescontoOrcamento.Text.Trim());
-            double valorItens = Convert.ToDouble(txtValorItensOrcamento.Text.Trim());
-            double frete = Convert.ToDouble(txtFreteOrcamento.Text.Trim());
-            double valorTotal = Convert.ToDouble(txtTotalOrcamento.Text.Trim());
+            String vendedor = txtVendedor.Text.Trim();
+            int desconto = Convert.ToInt32(txtDescontoOrcamento.Text.Trim());
+            int valorItens = Convert.ToInt32(txtValorItensOrcamento.Text.Trim());
+            int frete = Convert.ToInt32(txtFreteOrcamento.Text.Trim());
+            int valorTotal = Convert.ToInt32(txtTotalOrcamento.Text.Trim());
 
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
@@ -161,7 +201,7 @@ namespace HelpSerralheiro
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
 
-            MySqlCommand Query = new MySqlCommand("SELECT * FROM produtosvendas WHERE IdVenda=" + ClassInfo.IdVendaGlobal + ";", conex);
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM produtosorcamentos WHERE IdOrcamento=" + ClassInfo.IdVendaGlobal + ";", conex);
             //define o tipo do comando
             Query.CommandType = CommandType.Text;
             //cria um dataadapter
@@ -179,12 +219,12 @@ namespace HelpSerralheiro
             for (int i = 0; i < dgvOrcamento.Rows.Count - 1; i++)
             {
 
-                ValorItens += Convert.ToDouble(dgvOrcamento.Rows[i].Cells[7].Value);
+                ValorItens += Convert.ToInt32(dgvOrcamento.Rows[i].Cells[7].Value);
 
-                ValorFrete += Convert.ToDouble(dgvOrcamento.Rows[i].Cells[9].Value);
+                ValorFrete += Convert.ToInt32(dgvOrcamento.Rows[i].Cells[9].Value);
             }
             dgvOrcamento.Columns[0].Visible = false;
-            dgvOrcamento.Columns[7].Visible = false;
+            dgvOrcamento.Columns[8].Visible = false;
 
 
             txtValorItensOrcamento.Text = Convert.ToString(ValorItens);
@@ -195,5 +235,46 @@ namespace HelpSerralheiro
             Desconto = Convert.ToInt32(txtDescontoOrcamento.Text);
             txtTotalOrcamento.Text = Convert.ToString((ValorFrete + ValorItens) - Desconto);
         }
+
+        private void txtDescontoOrcamento_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (txtDescontoOrcamento.Text != "")
+            {
+                Desconto = Convert.ToInt32(txtDescontoOrcamento.Text);
+                ValorFrete = Convert.ToInt32(txtFreteOrcamento.Text);
+                ValorItens = Convert.ToInt32(txtValorItensOrcamento.Text);
+                txtTotalOrcamento.Text = Convert.ToString(ValorFrete + ValorItens - Desconto);
+            }
+        }
+
+        private void txtFreteOrcamento_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (txtFreteOrcamento.Text != "" )
+            {
+                if (txtDescontoOrcamento.Text != "")
+	                {
+                         Desconto = Convert.ToInt32(txtDescontoOrcamento.Text);
+	                }
+                ValorFrete = Convert.ToInt32(txtFreteOrcamento.Text);
+                ValorItens = Convert.ToInt32(txtValorItensOrcamento.Text);
+                txtTotalOrcamento.Text = Convert.ToString(ValorFrete + ValorItens - Desconto);
+            }
+        }
+
+        private void txtVendedor_Click(object sender, EventArgs e)
+        {
+            txtVendedor.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void txtVendedor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Se a tecla digitada não for número e nem backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08 || !char.IsLetter(e.KeyChar))
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = true;
+            }
+        }
+
     }
 }

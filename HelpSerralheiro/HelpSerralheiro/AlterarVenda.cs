@@ -17,6 +17,8 @@ namespace HelpSerralheiro
             InitializeComponent();
         }
         double ValorItens, ValorFrete, Desconto,ValorCusto,ValorLucro;
+        int idVendedor;
+        
         private void AlterarVenda_Load(object sender, EventArgs e)
         {
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
@@ -48,7 +50,10 @@ namespace HelpSerralheiro
                 txtDataVenda.Text = leitor["DataVenda"].ToString();
                 txtHoraVenda.Text = leitor["HoraVenda"].ToString();
                 txtComprador.Text = leitor["Comprador"].ToString();
+                txtIdComprador.Text = leitor["IdComprador"].ToString();
                 txtVendedor.Text = leitor["Vendedor"].ToString();
+                string idVend = leitor["IdVendedor"].ToString();
+                idVendedor = Convert.ToInt32(idVend);
                 txtDataEntrega.Text = leitor["DataEntrega"].ToString();
                 txtHoraEntrega.Text = leitor["HoraEntrega"].ToString();
                 txtObservacoes.Text = leitor["Observacoes"].ToString();
@@ -56,7 +61,6 @@ namespace HelpSerralheiro
                 txtValorItens.Text = leitor["ValorItens"].ToString();
                 txtFrete.Text = leitor["ValorFrete"].ToString();
                 txtValorTotal.Text = leitor["ValorTotal"].ToString();
-
 
             }
 
@@ -67,6 +71,23 @@ namespace HelpSerralheiro
 
 
             finally { conex.Close(); }
+            conex.Open();
+            MySqlCommand Query3 = new MySqlCommand("SELECT Nome FROM funcionario;", conex);
+            //define o tipo do comando
+            Query3.CommandType = CommandType.Text;
+            Query3.ExecuteNonQuery();
+
+            MySqlDataReader leitor2 = Query3.ExecuteReader();
+
+            for (int i = 0; leitor2.Read() != false; i++)
+            {
+                string ig = leitor2["Nome"].ToString();
+                txtVendedor.Items.Add(ig);
+            }
+
+            conex.Close();
+            
+
         }
 
         private void btnSair_Click(object sender, EventArgs e)
@@ -80,6 +101,7 @@ namespace HelpSerralheiro
         {
             String dataVenda = Convert.ToDateTime(txtDataVenda.Text).ToString("yyyy/MM/dd");
             String horaVenda = txtHoraVenda.Text.Trim();
+            int idComprador = Convert.ToInt32(txtIdComprador.Text.Trim());
             String comprador = txtComprador.Text.Trim();
             String vendedor = txtVendedor.Text.Trim();
             String dataEntrega = txtDataEntrega.Text.Trim();
@@ -89,17 +111,21 @@ namespace HelpSerralheiro
             double valorItens = Convert.ToDouble(txtValorItens.Text.Trim());
             double frete = Convert.ToDouble(txtFrete.Text.Trim());
             double valorTotal = Convert.ToDouble(txtValorTotal.Text.Trim());
+            
+            
+           
 
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("UPDATE vendas SET DataVenda='" + dataVenda + "', HoraVenda='" + horaVenda + "', Comprador='" + comprador + "', Vendedor='" + vendedor + "', DataEntrega='" + dataEntrega + "', HoraEntrega='" + horaEntrega + "', Observacoes='" + observacoes + "', Desconto=" + desconto + ", ValorItens=" + valorItens + ", ValorFrete=" + frete + ", ValorTotal=" + valorTotal + ", ValorLucro="+ValorLucro+" WHERE Id=" + ClassInfo.IdVendaGlobal + ";", conex);
+            MySqlCommand Query = new MySqlCommand("UPDATE vendas SET DataVenda='" + dataVenda + "',IdComprador='"+idComprador+"', HoraVenda='" + horaVenda + "', Comprador='" + comprador + "',IdVendedor='"+idVendedor+"', Vendedor='" + vendedor + "', DataEntrega='" + dataEntrega + "', HoraEntrega='" + horaEntrega + "', Observacoes='" + observacoes + "', Desconto=" + desconto + ", ValorItens=" + valorItens + ", ValorFrete=" + frete + ", ValorTotal=" + valorTotal + ", ValorLucro="+ValorLucro+" WHERE Id=" + ClassInfo.IdVendaGlobal + ";", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
+
             if (conex.State == ConnectionState.Open)
             {
-                MessageBox.Show("Alterado com sucesso!");
+                MessageBox.Show("Alterado com sucesso! "+idVendedor);
 
                 this.Close();
                 ConsultaVenda sub = new ConsultaVenda();
@@ -203,6 +229,32 @@ namespace HelpSerralheiro
             ValorLucro = ValorItens - ValorCusto;
             Desconto = Convert.ToInt32(txtDescontos.Text);
             txtValorTotal.Text = Convert.ToString((ValorFrete + ValorItens) - Desconto);
+
+            if (ClassInfo.IdClienteGlobal != "0")
+            {
+                txtIdComprador.Text = ClassInfo.IdClienteGlobal;
+                MySqlCommand Query2 = new MySqlCommand("SELECT Nome FROM cliente WHERE Id=" + ClassInfo.IdClienteGlobal + " ;", conex);
+                //define o tipo do comando
+                Query2.CommandType = CommandType.Text;
+                Query2.ExecuteNonQuery();
+                try
+                {
+                    MySqlDataReader leitor = Query2.ExecuteReader();
+
+                    leitor.Read(); //lê a primeira row da pesquisa
+                    txtIdComprador.Text = ClassInfo.IdClienteGlobal;
+                    txtComprador.Text = leitor["Nome"].ToString();
+
+
+                }
+
+                catch (Exception ex)
+                {
+                    ex.Message.ToString();
+                }
+
+                finally { conex.Close(); }
+            }
         }
 
         private void txtDescontos_KeyPress(object sender, KeyPressEventArgs e)
@@ -249,6 +301,28 @@ namespace HelpSerralheiro
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
             }
+        }
+
+        private void txtVendedor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Se a tecla digitada não for número e nem backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08 || !char.IsLetter(e.KeyChar))
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = true;
+            }
+        }
+
+        private void txtVendedor_Click(object sender, EventArgs e)
+        {
+            txtVendedor.DropDownStyle = ComboBoxStyle.DropDownList;
+            idVendedor = (txtVendedor.SelectedIndex) + 1;
+        }
+
+        private void btAddCliente_Click(object sender, EventArgs e)
+        {
+            ConsultaClientesVenda cons = new ConsultaClientesVenda();
+            cons.Show();
         }
 
 

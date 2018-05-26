@@ -88,7 +88,7 @@ namespace HelpSerralheiro
                     Query.ExecuteNonQuery();
 
                     //confirmação da exclusão
-                    MessageBox.Show("Registro excluido com sucesso! " + IdProd);
+                    MessageBox.Show("Produto excluido com sucesso do orçamento!");
 
                     btnOculto_Click(this, new EventArgs());
 

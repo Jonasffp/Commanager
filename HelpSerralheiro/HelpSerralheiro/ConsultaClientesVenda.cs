@@ -78,11 +78,15 @@ namespace HelpSerralheiro
             }
 
             var form = Application.OpenForms["NovaVenda"] as NovaVenda;
+            var form2 = Application.OpenForms["AlterarVenda"] as AlterarVenda;
             if (form != null)//se encontrou o form principal aberto
             {
                 form.btnOculto_Click(this, new EventArgs());
             }
-
+            if (form2 != null)//se encontrou o form principal aberto
+            {
+                form2.btnOculto_Click(this, new EventArgs());
+            }
             this.Close();
 
         }

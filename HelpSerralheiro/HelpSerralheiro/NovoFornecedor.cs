@@ -48,26 +48,33 @@ namespace HelpSerralheiro
             String emailrepresentanteFornecedor = txtEmailRepresentante.Text;
             String data = dateTimePicker1.Text;
 
-            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
-
-            MySqlConnection conex = new MySqlConnection(Config);
-            conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO fornecedor (DataCadastro, Segmento, NomeCompleto, NomeFantasia, Email, Rua, Numero, Bairro, Cidade, UF, CEP, Telefone, Telefone2, Celular, Celular2, Complemento, NomeRepresentante, EmailRepresentante, CNPJ, IE, Observacoes)" + "VALUES('" + data + "', '" + seguimentoFornecedor + "', '" + nomeFornecedor + "', '" + apelidoFornecedor + "', '" + emailFornecedor + "', '" + nomeruaFornecedor + "', '" + numeroRua + "', '" + bairroFornecedor + "', '" + cidadeFornecedor + "', '" + ufFornecedor + "', '" + cepFornecedor + "', '" + telefoneFornecedor + "', '" + telefone2Fornecedor + "', '" + celularFornecedor + "', '" + celular2Fornecedor + "', '" + complementoFornecedor + "', '" + nomerepresentanteFornecedor + "', '" + emailrepresentanteFornecedor + "', '" + cnpjFornecedor + "', '" + numieFornecedor + "', '" + obsFornecedor + "');", conex);
-            Query.ExecuteNonQuery();
-            Query.Connection = conex;
-            if (conex.State == ConnectionState.Open)
+            if (txtNomeFornecedor.TextLength < 1 || txtApelido.TextLength < 1 || txtEmailFornecedor.TextLength < 1 || txtNomeRepresentanteFornecedor.TextLength < 1 || txtEmailRepresentante.TextLength < 1)
             {
-                MessageBox.Show("Cadastrado com sucesso!");
-                this.Close();
-                SubFornecedores sub = new SubFornecedores();
-                sub.Show();
+                MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao Nome Completo, Nome Fantasia, Email, Nome Representante e Emai Representante !");
             }
             else
             {
-                MessageBox.Show("Erro ao cadastrar!");
-            }
-            conex.Close();
 
+                string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("INSERT INTO fornecedor (DataCadastro, Segmento, NomeCompleto, NomeFantasia, Email, Rua, NumeroRua, Bairro, Cidade, UF, CEP, Telefone, Telefone2, Celular, Celular2, Complemento, NomeRepresentante, EmailRepresentante, CNPJ, IE, Observacoes)" + "VALUES('" + data + "', '" + seguimentoFornecedor + "', '" + nomeFornecedor + "', '" + apelidoFornecedor + "', '" + emailFornecedor + "', '" + nomeruaFornecedor + "', '" + numeroRua + "', '" + bairroFornecedor + "', '" + cidadeFornecedor + "', '" + ufFornecedor + "', '" + cepFornecedor + "', '" + telefoneFornecedor + "', '" + telefone2Fornecedor + "', '" + celularFornecedor + "', '" + celular2Fornecedor + "', '" + complementoFornecedor + "', '" + nomerepresentanteFornecedor + "', '" + emailrepresentanteFornecedor + "', '" + cnpjFornecedor + "', '" + numieFornecedor + "', '" + obsFornecedor + "');", conex);
+                Query.ExecuteNonQuery();
+                Query.Connection = conex;
+                if (conex.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("Cadastrado com sucesso!");
+                    this.Close();
+                    SubFornecedores sub = new SubFornecedores();
+                    sub.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Erro ao cadastrar!");
+                }
+                conex.Close();
+            }
         }
 
         private void txtCEPFornecedor_KeyDown(object sender, KeyEventArgs e)
@@ -175,5 +182,8 @@ namespace HelpSerralheiro
                 finally { conex.Close(); }
             }
         }
+
+       
+   
     }
 }

@@ -33,11 +33,10 @@ namespace HelpSerralheiro
             else
             {
 
-                decimal valorCusto = Convert.ToDecimal(txtValorCusto.Text);
-                decimal valorVenda = Convert.ToDecimal(txtValorVenda.Text);
-                decimal valorFrete = Convert.ToDecimal(txtValorFrete.Text);
+                int valorCusto = Convert.ToInt16(txtValorCusto.Text);
+                int valorVenda = Convert.ToInt16(txtValorVenda.Text);
+                int valorFrete = Convert.ToInt16(txtValorFrete.Text);
 
-                MessageBox.Show(""+valorCusto);
                 string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
                 MySqlConnection conex = new MySqlConnection(Config);

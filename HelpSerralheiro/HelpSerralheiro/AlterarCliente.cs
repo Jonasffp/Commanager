@@ -44,9 +44,9 @@ namespace HelpSerralheiro
             celular = txtCelular.Text.Trim();
             observacoes = txtObservacoes.Text.Trim();
 
-            if (txtNome.TextLength < 1 || txtCPF.TextLength < 1 || txtRG.TextLength < 1 || txtEmail.TextLength < 1)
+            if (txtNome.TextLength < 1 || txtEmail.TextLength < 1)
             {
-                MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao nome, CPF, RG e email !");
+                MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao nome e email !");
             }
             else
             {
@@ -55,7 +55,7 @@ namespace HelpSerralheiro
 
                 MySqlConnection conex = new MySqlConnection(Config);
                 conex.Open();
-                MySqlCommand Query = new MySqlCommand("UPDATE cliente SET Nome='" + nome + "', RG='" + rg + "', CPF='" + cpf + "', DataNascimento='" + dataNascimento + "', Celular='" + celular + "', Telefone='" + telefone + "', Email='" + email + "', CEP='" + cep + "', UF='" + uf + "', Cidade='" + cidade + "', Rua='" + rua + "', NumeroRua='" + numerorua + "', Bairro='" + bairro + "', Complemento='" + complemento + "', Observacoes='" + observacoes + "' WHERE Id=" + ClassInfo.IdClienteGlobal + ";", conex);
+                MySqlCommand Query = new MySqlCommand("UPDATE cliente SET Nome='" + nome + "', RG='" + rg + "', CPF='" + cpf + "', DataNascimento='" + dataNascimento + "', Celular='" + celular + "', Telefone='" + telefone + "', Email='" + email + "', CEP='" + cep + "', UF='" + uf + "', Cidade='" + cidade + "', Rua='" + rua + "', Numero='" + numerorua + "', Bairro='" + bairro + "', Complemento='" + complemento + "', Observacoes='" + observacoes + "' WHERE Id=" + ClassInfo.IdClienteGlobal + ";", conex);
                 Query.ExecuteNonQuery();
                 Query.Connection = conex;
                 if (conex.State == ConnectionState.Open)

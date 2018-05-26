@@ -68,7 +68,7 @@ namespace HelpSerralheiro
         private void btnFechar_Click(object sender, EventArgs e)
         {
             this.Close();
-            Menu menu = new Menu();
+            ConsultarUsuario menu = new ConsultarUsuario();
             menu.Show();
         }
     }

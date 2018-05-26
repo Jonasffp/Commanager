@@ -16,5 +16,12 @@ namespace HelpSerralheiro
             Menu menu = new Menu();
             menu.Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            NovoCliente nv = new NovoCliente();
+            nv.Show();
+        }
     }
 }

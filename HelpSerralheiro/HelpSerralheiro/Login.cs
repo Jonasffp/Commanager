@@ -35,7 +35,7 @@ namespace HelpSerralheiro
             string nome = txtUsuario.Text;
             string senha = txtSenha.Text;
 
-            string Config = "server=127.0.0.1;userid=root;database=login";
+            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
             MySqlCommand Query = new MySqlCommand();

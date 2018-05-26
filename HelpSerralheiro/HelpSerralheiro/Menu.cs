@@ -19,7 +19,7 @@ namespace HelpSerralheiro
             InitializeComponent();
 
             string usuarioentrou2 = ClassInfo.Usuarioentrou;
-            string Config = "server=127.0.0.1;userid=root;database=login";
+            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
             string nomeuser;
             MySqlConnection conex = new MySqlConnection(Config);
             MySqlCommand Query = new MySqlCommand();
@@ -81,6 +81,13 @@ namespace HelpSerralheiro
             this.Close();
             SubOrcamento orc = new SubOrcamento();
             orc.Show();
+        }
+
+        private void btnAgenda_Click(object sender, EventArgs e)
+        {
+            SubAgenda sub = new SubAgenda();
+            sub.Show();
+            this.Close();
         }
     }
 }

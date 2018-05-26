@@ -13,6 +13,7 @@ namespace HelpSerralheiro
 {
     public partial class Login : Form
     {
+        public string usuarioentrou;
 
         public Login()
         {
@@ -46,8 +47,9 @@ namespace HelpSerralheiro
             bool Verifica = Query.ExecuteReader().HasRows;
             if (Verifica == true)
             {
+                ClassInfo.Usuarioentrou = nome;
                 MessageBox.Show("Logado");
-                Menu menu = new HelpSerralheiro.Menu();
+                Menu menu = new Menu();
                 menu.Show();
                 Close();
             }

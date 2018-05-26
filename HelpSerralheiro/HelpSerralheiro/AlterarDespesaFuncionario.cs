@@ -24,24 +24,7 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query2 = new MySqlCommand("SELECT Nome FROM funcionario;", conex);
-            //define o tipo do comando
-            Query2.CommandType = CommandType.Text;
-            Query2.ExecuteNonQuery();
-
-            MySqlDataReader leitor2 = Query2.ExecuteReader();
-
-            for (int i = 0; leitor2.Read() != false; i++)
-            {
-                string ig = leitor2["Nome"].ToString();
-                txtVendedor.Items.Add(ig);
-            }
-
-            conex.Close();
-
-            MySqlConnection conex2 = new MySqlConnection(Config);
-            conex2.Open();
-            MySqlCommand Query = new MySqlCommand("SELECT * FROM financasfuncionarios WHERE id = '" + ClassInfo.IdDespesaGlobal + "';", conex2);
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM financasfuncionarios WHERE id = '" + ClassInfo.IdDespesaGlobal + "';", conex);
 
             try
 
@@ -54,7 +37,20 @@ namespace HelpSerralheiro
                 txtSalario.Text = leitor["ValorSalario"].ToString();
                 txtObservacoes.Text = leitor["Observacoes"].ToString();
 
-                
+                MySqlCommand Query2 = new MySqlCommand("SELECT Nome FROM funcionario;", conex);
+                //define o tipo do comando
+                Query2.CommandType = CommandType.Text;
+                Query2.ExecuteNonQuery();
+
+                MySqlDataReader leitor2 = Query2.ExecuteReader();
+
+                for (int i = 0; leitor2.Read() != false; i++)
+                {
+                    string ig = leitor2["Nome"].ToString();
+                    txtVendedor.Items.Add(ig);
+                }
+
+                conex.Close();
             }
 
             catch (Exception ex)
@@ -62,13 +58,13 @@ namespace HelpSerralheiro
                 ex.Message.ToString();
             }
 
-            finally { conex2.Close(); }
+            finally { conex.Close(); }
         }
 
         private void btSalvar_Click(object sender, EventArgs e)
         {
             string nome = txtVendedor.Text;
-            string salario = txtSalario.Text.Replace(',', '.');
+            string salario = txtSalario.Text;
             string DataPagamento = Convert.ToDateTime(txtDataPagamento.Text).ToString("yyyy/MM/dd");
             string observacoes = txtObservacoes.Text;
 
@@ -101,55 +97,12 @@ namespace HelpSerralheiro
             cons.Show();
             this.Close();
         }
-        int virgula = 1, i = 2;
+
         private void txtSalario_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //Se a tecla digitada não for número e nem backspace
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = true;
-            }
-
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 1)
-            {
-                i = 2;
-                return;
-            }
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 0)
-            {
-                i = 1;
-            }
-
-            if (e.KeyChar == ',' && virgula != 1)
-            {
-                e.Handled = false;
-                virgula = 1;
-                return;
-            }
-
-            if (virgula == 1 && i == 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                virgula = 0;
-                return;
-            }
-
-
-
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 2)
+            if (!char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
-                //SendKeys.SendWait("{BACKSPACE}");
-            }
-
-            if (virgula == 1 && i > 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                i = i - 1;
-                return;
             }
         }
     }

@@ -17,20 +17,13 @@ namespace HelpSerralheiro
             InitializeComponent();
             
         }
-        int IdProd;
-        Decimal ValorItens, ValorFrete, Desconto,ValorLucro,ValorCusto;
-
-    private void btnFinalizar_Click(object sender, EventArgs e)
+        double ValorItens, ValorFrete, Desconto,ValorLucro,ValorCusto;
+        private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            if (txtComprador.Text == "" || txtIdComprador.Text == "")
-            {
-                MessageBox.Show("Selecionar o comprador e o vendedor para maior segurança nas vendas!");
-                return;
-            }
             if (txtValorTotal.Text == "")
             {
                  MessageBox.Show("Erro ao concluir a venda!");
-                 MessageBox.Show("É necessário escolher no mínimo um produto!"); 
+                 MessageBox.Show("É necessário escolher no mínimo um produto!");
             }    
 
             String dataVenda = Convert.ToDateTime(txtDataVenda.Text).ToString("yyyy/MM/dd");
@@ -44,18 +37,18 @@ namespace HelpSerralheiro
             
 
 
-                string desconto = (txtDescontos.Text.Trim().Replace(",","."));
-                string valorItens = (txtValorItens.Text.Trim().Replace(",", "."));
-                string frete = (txtFrete.Text.Trim().Replace(",", "."));
-                string valorTotal = (txtValorTotal.Text.Trim().Replace(",", "."));
-                string ValorLucro1 = Convert.ToString(ValorLucro).Replace(",", ".");
+                double desconto = Convert.ToDouble(txtDescontos.Text.Trim());
+                double valorItens = Convert.ToDouble(txtValorItens.Text.Trim());
+                double frete = Convert.ToDouble(txtFrete.Text.Trim());
+                double valorTotal = Convert.ToDouble(txtValorTotal.Text.Trim());
+
 
             
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query1 = new MySqlCommand("INSERT INTO vendas (IdComprador, IdVendedor, Comprador, Vendedor, DataVenda, HoraVenda, DataEntrega, HoraEntrega, Observacoes, ValorItens, Desconto, ValorFrete, ValorTotal, ValorLucro)" + "VALUES('"+idComprador+"', '0', '" + comprador + "', '" + vendedor + "', '" + dataVenda + "', '" + horaVenda + "', '" + dataEntrega + "', '" + horaEntrega + "', '" + observacoes + "', '" + valorItens + "', '" + desconto + "', '" + frete + "', '" + valorTotal + "', '"+ValorLucro1+"');", conex);
+            MySqlCommand Query1 = new MySqlCommand("INSERT INTO vendas (IdComprador, IdVendedor, Comprador, Vendedor, DataVenda, HoraVenda, DataEntrega, HoraEntrega, Observacoes, ValorItens, Desconto, ValorFrete, ValorTotal, ValorLucro)" + "VALUES('"+idComprador+"', '0', '" + comprador + "', '" + vendedor + "', '" + dataVenda + "', '" + horaVenda + "', '" + dataEntrega + "', '" + horaEntrega + "', '" + observacoes + "', '" + valorItens + "', '" + desconto + "', '" + frete + "', '" + valorTotal + "', '"+ValorLucro+"');", conex);
             Query1.ExecuteNonQuery();
             int idVenda = Convert.ToInt32(Query1.LastInsertedId);
 
@@ -137,7 +130,7 @@ namespace HelpSerralheiro
                 e.Handled = true;
             }
         }
-        int virgula = 1, i = 2;
+
         private void txtDescontos_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Se a tecla digitada não for número e nem backspace
@@ -146,49 +139,8 @@ namespace HelpSerralheiro
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
             }
-
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 1)
-            {
-                i = 2;
-                return;
-            }
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 0)
-            {
-                i = 1;
-            }
-
-            if (e.KeyChar == ',' && virgula != 1)
-            {
-                e.Handled = false;
-                virgula = 1;
-                return;
-            }
-
-            if (virgula == 1 && i == 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                virgula = 0;
-                return;
-            }
-
-
-
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 2)
-            {
-                e.Handled = true;
-                //SendKeys.SendWait("{BACKSPACE}");
-            }
-
-            if (virgula == 1 && i > 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                i = i - 1;
-                return;
-            }
         }
-        int virgula2 = 1, i2 = 2;
+
         private void txtFrete_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Se a tecla digitada não for número e nem backspace
@@ -196,47 +148,6 @@ namespace HelpSerralheiro
             {
                 //Atribui True no Handled para cancelar o evento
                 e.Handled = true;
-            }
-
-            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 1)
-            {
-                i2 = 2;
-                return;
-            }
-            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 0)
-            {
-                i2 = 1;
-            }
-
-            if (e.KeyChar == ',' && virgula2 != 1)
-            {
-                e.Handled = false;
-                virgula2 = 1;
-                return;
-            }
-
-            if (virgula2 == 1 && i2 == 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                virgula2 = 0;
-                return;
-            }
-
-
-
-            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 2)
-            {
-                e.Handled = true;
-                //SendKeys.SendWait("{BACKSPACE}");
-            }
-
-            if (virgula2 == 1 && i2 > 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                i2 = i2 - 1;
-                return;
             }
         }
 
@@ -249,7 +160,6 @@ namespace HelpSerralheiro
                 e.Handled = true;
             }
         }
-
 
         public void btnOculto_Click(object sender, EventArgs e)
         {
@@ -278,12 +188,12 @@ namespace HelpSerralheiro
             //atribui o datatable ao datagridview para exibir o resultado
             dgvVenda.DataSource = produto;
 
-            for (int i = 0; i < dgvVenda.Rows.Count ; i++)
+            for (int i = 0; i < dgvVenda.Rows.Count - 1; i++)
             {
                
-                   ValorItens += Convert.ToDecimal(dgvVenda.Rows[i].Cells[6].Value);
-                   ValorCusto += Convert.ToDecimal(dgvVenda.Rows[i].Cells[7].Value);
-                ValorFrete += Convert.ToDecimal(dgvVenda.Rows[i].Cells[8].Value);
+                   ValorItens += Convert.ToDouble(dgvVenda.Rows[i].Cells[6].Value);
+                   ValorCusto += Convert.ToDouble(dgvVenda.Rows[i].Cells[7].Value);
+                   ValorFrete += Convert.ToDouble(dgvVenda.Rows[i].Cells[8].Value);
 
             }
             dgvVenda.Columns[0].Visible = false;
@@ -295,7 +205,7 @@ namespace HelpSerralheiro
 
 
 
-            Desconto = Convert.ToDecimal(txtDescontos.Text);
+            Desconto = Convert.ToInt32(txtDescontos.Text);
             ValorLucro = ValorItens - ValorCusto;
             txtValorTotal.Text = Convert.ToString((ValorFrete + ValorItens)-Desconto);
 
@@ -337,11 +247,6 @@ namespace HelpSerralheiro
         private void NovaVenda_Load(object sender, EventArgs e)
         {
             ClassInfo.IdClienteGlobal = "0";
-            txtValorItens.Text = "0,00";
-            txtDescontos.Text = "0,00";
-            txtFrete.Text = "0,00";
-            txtValorTotal.Text = "0,00";
-
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
@@ -366,7 +271,6 @@ namespace HelpSerralheiro
             }
 
             conex.Close();
-
         }
 
         private void NovaVenda_FormClosed(object sender, FormClosedEventArgs e)
@@ -394,16 +298,9 @@ namespace HelpSerralheiro
             }
             if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Cliente", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                try
-                {
-                    // pega o valor do id na ccoluna selecionada
-                    IdProd = Convert.ToInt32(dgvVenda.CurrentRow.Cells[0].Value);
-                }
-                catch
-                {
-                    MessageBox.Show("Por favor clique sobre o produto que deseja excluir!");
-                    return;
-                }
+                // pega o valor do id na ccoluna selecionada
+                int IdProd = Convert.ToInt32(dgvVenda.CurrentRow.Cells[0].Value);
+
                 try
                 {
                     //string de conexão mysql
@@ -441,35 +338,23 @@ namespace HelpSerralheiro
 
         private void txtDescontos_KeyUp(object sender, KeyEventArgs e)
         {
-            if (txtFrete.TextLength > 0 && txtDescontos.TextLength > 0 && txtFrete.Text != "," && txtDescontos.Text != "," )
+            if (txtDescontos.Text != "")
             {
-                Desconto = Convert.ToDecimal(txtDescontos.Text);
-                ValorFrete = Convert.ToDecimal(txtFrete.Text);
-                ValorItens = Convert.ToDecimal(txtValorItens.Text);
+                Desconto = Convert.ToInt32(txtDescontos.Text);
+                ValorFrete = Convert.ToInt32(txtFrete.Text);
+                ValorItens = Convert.ToInt32(txtValorItens.Text);
                 txtValorTotal.Text = Convert.ToString(ValorFrete + ValorItens - Desconto);
-            }
-            else
-            {
-                MessageBox.Show("É necessário que todos os campos referentes a valores estejam preenchidos corretamente para que o cálculo possa ser feito !");
-                if (txtFrete.TextLength == 0 || txtFrete.Text == ",") { txtFrete.Text = ("0"); }
-                else if (txtDescontos.TextLength == 0 || txtDescontos.Text == ",") { txtDescontos.Text = ("0"); }
             }
         }
 
         private void txtFrete_KeyUp(object sender, KeyEventArgs e)
         {
-            if (txtFrete.TextLength > 0 && txtDescontos.TextLength > 0 && txtFrete.Text != "," && txtDescontos.Text != ",")
+            if (txtFrete.Text != "")
             {
-                Desconto = Convert.ToDecimal(txtDescontos.Text);
-                ValorFrete = Convert.ToDecimal(txtFrete.Text);
-                ValorItens = Convert.ToDecimal(txtValorItens.Text);
+                Desconto = Convert.ToInt32(txtDescontos.Text);
+                ValorFrete = Convert.ToInt32(txtFrete.Text);
+                ValorItens = Convert.ToInt32(txtValorItens.Text);
                 txtValorTotal.Text = Convert.ToString(ValorFrete + ValorItens - Desconto);
-            }
-            else
-            {
-                MessageBox.Show("É necessário que todos os campos referentes a valores estejam preenchidos corretamente para que o cálculo possa ser feito !");
-                if (txtFrete.TextLength == 0 || txtFrete.Text == ",") { txtFrete.Text = ("0"); }
-                else if (txtDescontos.TextLength == 0 || txtDescontos.Text == ",") { txtDescontos.Text = ("0"); }
             }
         }
 

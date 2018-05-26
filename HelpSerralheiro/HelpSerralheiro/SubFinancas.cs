@@ -34,7 +34,7 @@ namespace HelpSerralheiro
         {
             ConsultaFinancasFuncionario cons = new ConsultaFinancasFuncionario();
             cons.Show();
-            this.Close();
+            this.Show();
         }
 
         private void btFinancasVendas_Click(object sender, EventArgs e)
@@ -49,12 +49,6 @@ namespace HelpSerralheiro
             ConsultaFinancasGeral cons = new ConsultaFinancasGeral();
             cons.Show();
             this.Close();
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            lblHora.Text = DateTime.Now.ToLongTimeString();
-            lbldata.Text = DateTime.Now.ToLongDateString();
         }
     }
 }

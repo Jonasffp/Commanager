@@ -114,28 +114,5 @@ namespace HelpSerralheiro
 
             }
         }
-
-        private void ConsultarUsuario_Load(object sender, EventArgs e)
-        {
-            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
-
-            MySqlConnection conex = new MySqlConnection(Config);
-            conex.Open();
-
-            MySqlCommand Query = new MySqlCommand("SELECT * FROM usuarios;", conex);
-            //define o tipo do comando
-            Query.CommandType = CommandType.Text;
-            //cria um dataadapter
-            MySqlDataAdapter da = new MySqlDataAdapter(Query);
-
-            //cria um objeto datatable
-            DataTable usuario = new DataTable();
-
-            //preenche o datatable via dataadapter
-            da.Fill(usuario);
-
-            //atribui o datatable ao datagridview para exibir o resultado
-            dgvUsuario.DataSource = usuario;
-        }
     }
 }

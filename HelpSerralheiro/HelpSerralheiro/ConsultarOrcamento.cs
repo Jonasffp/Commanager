@@ -51,11 +51,6 @@ namespace HelpSerralheiro
                 btnAlterarRegistro.Enabled = false;
                 btnExcluirRegistro.Enabled = false;
             }
-
-            foreach (DataGridViewColumn column in dgvOrcamento.Columns)
-            {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)

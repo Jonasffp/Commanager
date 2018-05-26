@@ -38,7 +38,7 @@ namespace HelpSerralheiro
             Application.Exit();
         }
 
-        public void timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
             lblHora.Text = DateTime.Now.ToLongTimeString();
             lbldata.Text = DateTime.Now.ToLongDateString();

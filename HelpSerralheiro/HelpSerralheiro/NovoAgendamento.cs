@@ -16,6 +16,8 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
+        int idVendedor;
+
         private void btnSair_Click(object sender, EventArgs e)
         {
             SubAgenda sub = new SubAgenda();

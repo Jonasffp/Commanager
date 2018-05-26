@@ -33,9 +33,9 @@ namespace HelpSerralheiro
             else
             {
 
-                string valorCusto = (txtValorCusto.Text.Replace(",", "."));
-                string valorVenda = (txtValorVenda.Text.Replace(",", "."));
-                string valorFrete = (txtValorFrete.Text.Replace(",","."));
+                int valorCusto = Convert.ToInt16(txtValorCusto.Text);
+                int valorVenda = Convert.ToInt16(txtValorVenda.Text);
+                int valorFrete = Convert.ToInt16(txtValorFrete.Text);
 
                 string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
@@ -90,158 +90,41 @@ namespace HelpSerralheiro
 
             conex.Close();
         }
-        int virgula = 0, i = 0;
+
         private void txtValorFrete_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //Se a tecla digitada não for número e nem backspace
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = true;
-            }
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar))
 
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 1)
             {
-                i = 2;
-                return;
-            }
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 0)
-            {
-                i = 1;
-            }
 
-            if (e.KeyChar == ',' && virgula != 1)
-            {
                 e.Handled = false;
-                virgula = 1;
-                return;
+
             }
-
-            if (virgula == 1 && i == 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                virgula = 0;
-                return;
-            }
-
-
-
-            if (char.IsDigit(e.KeyChar) && virgula == 1 && i == 2)
-            {
-                e.Handled = true;
-                //SendKeys.SendWait("{BACKSPACE}");
-            }
-
-            if (virgula == 1 && i > 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                i = i - 1;
-                return;
-            }
+            else { e.Handled = true; }
         }
-        int virgula2 = 0, i2 = 0;
+
         private void txtValorCusto_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //Se a tecla digitada não for número e nem backspace
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = true;
-            }
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar))
 
-            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 1)
             {
-                i2 = 2;
-                return;
-            }
-            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 0)
-            {
-                i2 = 1;
-            }
 
-            if (e.KeyChar == ',' && virgula2 != 1)
-            {
                 e.Handled = false;
-                virgula2 = 1;
-                return;
+
             }
-
-            if (virgula2 == 1 && i2 == 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                virgula2 = 0;
-                return;
-            }
-
-
-
-            if (char.IsDigit(e.KeyChar) && virgula2 == 1 && i2 == 2)
-            {
-                e.Handled = true;
-                //SendKeys.SendWait("{BACKSPACE}");
-            }
-
-            if (virgula2 == 1 && i2 > 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                i2 = i2 - 1;
-                return;
-            }
+            else { e.Handled = true; }
         }
-        int virgula3 = 0, i3 = 0;
+
         private void txtValorVenda_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //Se a tecla digitada não for número e nem backspace
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = true;
-            }
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar))
 
-            if (char.IsDigit(e.KeyChar) && virgula3 == 1 && i3 == 1)
             {
-                i3 = 2;
-                return;
-            }
-            if (char.IsDigit(e.KeyChar) && virgula3 == 1 && i3 == 0)
-            {
-                i3 = 1;
-            }
 
-            if (e.KeyChar == ',' && virgula3 != 1)
-            {
                 e.Handled = false;
-                virgula3 = 1;
-                return;
+
             }
-
-            if (virgula3 == 1 && i3 == 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                virgula3 = 0;
-                return;
-            }
-
-
-
-            if (char.IsDigit(e.KeyChar) && virgula3 == 1 && i3 == 2)
-            {
-                e.Handled = true;
-                //SendKeys.SendWait("{BACKSPACE}");
-            }
-
-            if (virgula3 == 1 && i3 > 0 && e.KeyChar == 08)
-            {
-                //Atribui True no Handled para cancelar o evento
-                e.Handled = false;
-                i3 = i3 - 1;
-                return;
-            }
+            else { e.Handled = true; }
         }
 
         private void textBox1_KeyPress(object sender,

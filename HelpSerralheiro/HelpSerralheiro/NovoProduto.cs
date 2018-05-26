@@ -33,7 +33,7 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO produto (nomeProduto, unidadeProduto, marcaProduto, categoriaProduto, fornecedorProduto, valorCustoProduto, valorVendaProduto, frete, observacoesProduto)" + "VALUES('" + nome + "', '" + unidade + "', '" + marca + "', '" + categoria + "', '" + fornecedor + "', '" + valorCusto + "', '" + valorVenda + "', '" + valorFrete + "', '" + observacoes + "');", conex);
+            MySqlCommand Query = new MySqlCommand("INSERT INTO produto (Nome, Unidade, Marca, Categoria, Fornecedor, Valor de Custo, Valor de Venda, Frete, Observacoes)" + "VALUES('" + nome + "', '" + unidade + "', '" + marca + "', '" + categoria + "', '" + fornecedor + "', '" + valorCusto + "', '" + valorVenda + "', '" + valorFrete + "', '" + observacoes + "');", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
             if (conex.State == ConnectionState.Open)

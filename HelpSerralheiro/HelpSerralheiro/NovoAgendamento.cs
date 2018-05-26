@@ -49,7 +49,7 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO agenda (nome, visibilidade, importancia, data, hora, observacoes)" + "VALUES('" + NomeLembrete + "', '" + Visibilidade + "', '" + Importancia + "', '" + Data + "', '" + Hora + "', '" + Obs + "');", conex);
+            MySqlCommand Query = new MySqlCommand("INSERT INTO agenda (Nome, Visibilidade, Importancia, Data, Hora, Observacoes)" + "VALUES('" + NomeLembrete + "', '" + Visibilidade + "', '" + Importancia + "', '" + Data + "', '" + Hora + "', '" + Obs + "');", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
             if (conex.State == ConnectionState.Open)

@@ -30,7 +30,12 @@ public static string IdClienteGlobal
     get { return ClassInfo.idClienteGlobal; }
     set { ClassInfo.idClienteGlobal = value; }
 }
-
-    }
+private static string tipoUsuario;
+    
+public static string TipoUsuario
+{
+  get { return ClassInfo.tipoUsuario; }
+  set { ClassInfo.tipoUsuario = value; }
+}}
 }
 

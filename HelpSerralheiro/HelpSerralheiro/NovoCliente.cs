@@ -41,13 +41,14 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO cliente (nome, rg, cpf, dataNasc, celular, telefone, email, cep, uf, cidade, rua, numeroRua, bairro, complemento, observacoes)" + "VALUES('" + nome + "', '" + rg + "', '" + cpf + "', '" + dataNascimento + "', '" + celular + "', '" + telefone + "', '" + email + "', '" + cep + "', '" + uf + "', '" + cidade + "', '" + rua + "', '" + numerorua + "', '" + bairro + "', '" + complemento + "', '" + observacoes + "');", conex);
+            MySqlCommand Query = new MySqlCommand("INSERT INTO cliente (Nome, RG, CPF, Nascimento, Celular, Telefone, Email, CEP, UF, Cidade, Rua, Numero, Bairro, Complemento, Observacoes)" + "VALUES('" + nome + "', '" + rg + "', '" + cpf + "', '" + dataNascimento + "', '" + celular + "', '" + telefone + "', '" + email + "', '" + cep + "', '" + uf + "', '" + cidade + "', '" + rua + "', '" + numerorua + "', '" + bairro + "', '" + complemento + "', '" + observacoes + "');", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
             if (conex.State == ConnectionState.Open)
             {
                 MessageBox.Show("Cadastrado com sucesso!");
                 txtNome.Clear(); txtCPF.Clear(); txtRG.Clear(); txtDataNascimento.Text = Convert.ToString(DateTime.Now); txtRua.Clear(); txtBairro.Clear(); txtCidade.Clear(); txtCEP.Clear(); txtUF.Clear(); txtComplemento.Clear();txtEmail.Clear();txtTelefone.Clear(); txtCelular.Clear(); txtObservacoes.Clear();
+                this.Close();
                 SubClientes sub = new SubClientes();
                 sub.Show();
             }

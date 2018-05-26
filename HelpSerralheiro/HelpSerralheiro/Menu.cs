@@ -89,5 +89,21 @@ namespace HelpSerralheiro
             sub.Show();
             this.Close();
         }
+
+        private void Menu_Load(object sender, EventArgs e)
+        {
+            MessageBox.Show(ClassInfo.TipoUsuario);
+            if (ClassInfo.TipoUsuario == "Vendedor")
+            {
+                btnProdutos.Image = null;
+                btnProdutos.Image = Properties.Resources.font_awesome_4_7_0_lock_106_0_34495e_none;
+            }
+            if (ClassInfo.TipoUsuario == "Aministrador")
+            {
+            }
+            if (ClassInfo.TipoUsuario == "Avançado")
+            {
+            }
+        }
     }
 }

@@ -40,10 +40,43 @@ namespace HelpSerralheiro
             Query.Parameters.AddWithValue("@nome", nome);
             Query.Parameters.AddWithValue("@senha", senha);
             bool Verifica = Query.ExecuteReader().HasRows;
+
+            //MySqlConnection conex2 = new MySqlConnection(Config);
+          // // conex2.Open();
+
+            //MySqlCommand Query2 = new MySqlCommand("SELECT * FROM usuario WHERE nome LIKE '%" + nome + "%';", conex2);
+
+            //MySqlDataReader leitor = Query2.ExecuteReader();
+
+          // leitor.Read(); //lê a primeira row da pesquisa
+           // ClassInfo.TipoUsuario = leitor["tipo"].ToString();
+                
+
+
+            MySqlConnection conex2 = new MySqlConnection(Config);
+            conex2.Open();
+            MySqlCommand Query2 = new MySqlCommand("SELECT * FROM usuario WHERE usuario=" + nome + "';", conex2);
+
+                try
+
+                {
+                MySqlDataReader leitor = Query2.ExecuteReader();
+
+                    leitor.Read(); //lê a primeira row da pesquisa
+                    ClassInfo.TipoUsuario = leitor["tipo"].ToString();
+                }
+
+                 catch (Exception ex)
+                                {
+                                    ex.Message.ToString();
+                                }
+
+                finally{conex.Close();}
+
             if (Verifica == true)
             {
                 ClassInfo.Usuarioentrou = nome;
-                MessageBox.Show("Logado");
+
                 Menu menu = new Menu();
                 menu.Show();
                 Close();
@@ -66,6 +99,22 @@ namespace HelpSerralheiro
             this.Close();
             EsqueceSenha esq = new EsqueceSenha();
             esq.Show();
+        }
+
+        private void txtUsuario_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                button1.PerformClick();
+            }
+        }
+
+        private void txtSenha_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                button1.PerformClick();
+            }
         }
     }
 }

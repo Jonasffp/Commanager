@@ -30,6 +30,7 @@ namespace HelpSerralheiro
             String seguimentoFornecedor = cbSegmentoFornecedor.Text;
             String apelidoFornecedor = txtApelido.Text;
             String nomeruaFornecedor = txtNomeRuaFornecedor.Text;
+            String numeroRua = txtnumeroRua.Text;
             String bairroFornecedor = txtBairroFornecedor.Text;
             String cidadeFornecedor = txtCidadeFornecedor.Text;
             String ufFornecedor = txtufFornecedor.Text;
@@ -51,7 +52,7 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO fornecedor (dataCadastro, segmento, nomeCompleto, nomeFantasia, email, rua, bairro, cidade, UF, CEP, telefone, telefone_2, celular, celular_2, complemento, nomeRepresentante, emailRepresentante, CNPJ, IE, observacoes)" + "VALUES('" + data + "', '" + seguimentoFornecedor +"', '" + nomeFornecedor + "', '" + apelidoFornecedor + "', '" + emailFornecedor + "', '" + nomeruaFornecedor + "', '" + bairroFornecedor + "', '" + cidadeFornecedor + "', '" + ufFornecedor + "', '" + cepFornecedor + "', '" + telefoneFornecedor + "', '" + telefone2Fornecedor + "', '" + celularFornecedor + "', '" + celular2Fornecedor + "', '" + complementoFornecedor + "', '" + nomerepresentanteFornecedor + "', '" + emailrepresentanteFornecedor + "', '" + cnpjFornecedor + "', '" + numieFornecedor + "', '" + obsFornecedor + "');", conex);
+            MySqlCommand Query = new MySqlCommand("INSERT INTO fornecedor (dataCadastro, segmento, nomeCompleto, nomeFantasia, email, rua, numeroRua, bairro, cidade, UF, CEP, telefone, telefone_2, celular, celular_2, complemento, nomeRepresentante, emailRepresentante, CNPJ, IE, observacoes)" + "VALUES('" + data + "', '" + seguimentoFornecedor + "', '" + nomeFornecedor + "', '" + apelidoFornecedor + "', '" + emailFornecedor + "', '" + nomeruaFornecedor + "', '" + numeroRua + "', '" + bairroFornecedor + "', '" + cidadeFornecedor + "', '" + ufFornecedor + "', '" + cepFornecedor + "', '" + telefoneFornecedor + "', '" + telefone2Fornecedor + "', '" + celularFornecedor + "', '" + celular2Fornecedor + "', '" + complementoFornecedor + "', '" + nomerepresentanteFornecedor + "', '" + emailrepresentanteFornecedor + "', '" + cnpjFornecedor + "', '" + numieFornecedor + "', '" + obsFornecedor + "');", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
             if (conex.State == ConnectionState.Open)
@@ -67,6 +68,68 @@ namespace HelpSerralheiro
             }
             conex.Close();
 
+        }
+
+        private void txtCEPFornecedor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == (char)Keys.Back)
+            {
+                txtNomeRuaFornecedor.Clear();
+                txtBairroFornecedor.Clear();
+                txtCidadeFornecedor.Clear();
+
+            }
+        }
+
+        private void txtCEPFornecedor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            //Se a tecla digitada não for número e nem backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = true;
+            }
+
+
+            if (e.KeyChar == 13)
+            {
+
+                string Config = "server=127.0.0.1;userid=root;database=cep";
+                string cep = txtCEPFornecedor.Text.Trim();
+                string UF = txtufFornecedor.Text.Trim();
+
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("SELECT * FROM " + UF + " WHERE cep = '" + cep + "';", conex);
+
+                try
+                {
+                    MySqlDataReader leitor = Query.ExecuteReader();
+                    if (leitor.HasRows)
+                    {
+                        txtNomeRuaFornecedor.Clear();
+                        txtBairroFornecedor.Clear();
+                        txtCidadeFornecedor.Clear();
+
+                        leitor.Read(); //lê a primeira row da pesquisa
+                        txtNomeRuaFornecedor.Text = leitor["logradouro"].ToString();
+                        txtBairroFornecedor.Text = leitor["bairro"].ToString();
+                        txtCidadeFornecedor.Text = leitor["cidade"].ToString();
+
+                    }
+
+                }
+
+                catch (Exception ex)
+                {
+                    ex.Message.ToString();
+                }
+
+                finally { conex.Close(); }
+
+            }
         }
     }
 }

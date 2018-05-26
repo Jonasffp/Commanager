@@ -67,5 +67,12 @@ namespace HelpSerralheiro
             cad.Show();
             this.Close();
         }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.Close();
+            EsqueceSenha esq = new EsqueceSenha();
+            esq.Show();
+        }
     }
 }

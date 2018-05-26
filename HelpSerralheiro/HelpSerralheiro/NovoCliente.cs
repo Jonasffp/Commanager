@@ -19,9 +19,10 @@ namespace HelpSerralheiro
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String nome, cpf, rg, dataNascimento, rua, bairro, cidade, cep, uf, complemento, email, telefone, celular, observacoes;
+            String nome,numerorua, cpf, rg, dataNascimento, rua, bairro, cidade, cep, uf, complemento, email, telefone, celular, observacoes;
 
             nome = txtNome.Text.Trim();
+            numerorua = txtnumeroRua.Text.Trim();
             cpf = txtCPF.Text.Trim();
             rg = txtRG.Text.Trim();
             dataNascimento = txtDataNascimento.Text.Trim();
@@ -41,7 +42,7 @@ namespace HelpSerralheiro
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO cliente (nome, rg, cpf, dataNasc, celular, telefone, email, cep, uf, cidade, rua, bairro, complemento, observacoes)" + "VALUES('" + nome + "', '" + rg + "', '" + cpf + "', '" + dataNascimento + "', '" + celular + "', '" + telefone + "', '" + email + "', '" + cep + "', '" + uf + "', '" + cidade + "', '" + rua + "', '" + bairro +"', '" + complemento+"', '" + observacoes+"');", conex);
+            MySqlCommand Query = new MySqlCommand("INSERT INTO cliente (nome, rg, cpf, dataNasc, celular, telefone, email, cep, uf, cidade, rua, numeroRua, bairro, complemento, observacoes)" + "VALUES('" + nome + "', '" + rg + "', '" + cpf + "', '" + dataNascimento + "', '" + celular + "', '" + telefone + "', '" + email + "', '" + cep + "', '" + uf + "', '" + cidade + "', '" + rua + "', '" + numerorua + "', '" + bairro + "', '" + complemento + "', '" + observacoes + "');", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
             if (conex.State == ConnectionState.Open)
@@ -110,6 +111,74 @@ namespace HelpSerralheiro
             SubClientes sub = new SubClientes();
             sub.Show();
         }
+
+        private void txtCEP_KeyPress_1(object sender, KeyPressEventArgs e)
+        {
+                                 
+            //Se a tecla digitada não for número e nem backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != 08)
+            {
+                //Atribui True no Handled para cancelar o evento
+                e.Handled = true;
+            }
+
+
+            if (e.KeyChar == 13)
+            {
+               
+            string Config = "server=127.0.0.1;userid=root;database=cep";
+            string cep = txtCEP.Text.Trim();
+            string UF = txtUF.Text.Trim();
+                
+
+        MySqlConnection conex = new MySqlConnection(Config);
+        conex.Open();
+        MySqlCommand Query = new MySqlCommand("SELECT * FROM "+UF+" WHERE cep = '"+cep+"';", conex);
+
+                try
+
+                {
+                MySqlDataReader leitor = Query.ExecuteReader();
+                if(leitor.HasRows)
+                {
+                    txtRua.Clear();
+                    txtBairro.Clear();
+                    txtCidade.Clear();
+
+                    leitor.Read(); //lê a primeira row da pesquisa
+                    txtRua.Text = leitor["logradouro"].ToString();
+                    txtBairro.Text = leitor["bairro"].ToString();
+                    txtCidade.Text = leitor["cidade"].ToString();
+
+                }
+
+                }
+
+                 catch (Exception ex)
+                                {
+                                    ex.Message.ToString();
+                                }
+
+                finally{conex.Close();}
+
+            }
+
+
+
+            
+        }
+
+        private void txtCEP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == (char)Keys.Back)
+            {
+                txtRua.Clear();
+                txtBairro.Clear();
+                txtCidade.Clear();
+
+            }
+        }
+        
 
 
     }

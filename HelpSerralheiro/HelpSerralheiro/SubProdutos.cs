@@ -15,17 +15,18 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-
-        private void SubProdutos_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnFechar_Click(object sender, EventArgs e)
         {
             this.Close();
             Menu menu = new HelpSerralheiro.Menu();
             menu.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            NovoProduto nv = new NovoProduto();
+            nv.Show();
         }
     }
 }

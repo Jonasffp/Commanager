@@ -46,7 +46,7 @@ namespace HelpSerralheiro
                 return;
             } else { email = emailtemp; }
 
-            string Config = "server=127.0.0.1;userid=root;database=login";
+            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();

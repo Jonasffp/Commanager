@@ -43,7 +43,6 @@ namespace HelpSerralheiro
             if (rbImportante.Checked) { Importancia = rbImportante.Text; }
             if (rbMuitoImportante.Checked) { Importancia = rbMuitoImportante.Text; }
 
-            MessageBox.Show(NomeLembrete + "\n" + Visibilidade + "\n" + Importancia+ "\n" + Data + "\n" + Hora + "\n" + Obs) ;
 
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 

@@ -105,5 +105,12 @@ namespace HelpSerralheiro
             {
             }
         }
+
+        private void btnVendas_Click(object sender, EventArgs e)
+        {
+            SubVendas sb = new SubVendas();
+            sb.Show();
+            this.Close();
+        }
     }
 }

@@ -36,6 +36,16 @@ public static string TipoUsuario
 {
   get { return ClassInfo.tipoUsuario; }
   set { ClassInfo.tipoUsuario = value; }
-}}
+}
+private static int idProdutoGlobal;
+
+public static int IdProdutoGlobal
+{
+    get { return ClassInfo.idProdutoGlobal; }
+    set { ClassInfo.idProdutoGlobal = value; }
+}
+
+
+    }
 }
 

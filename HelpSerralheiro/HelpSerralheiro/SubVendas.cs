@@ -22,5 +22,12 @@ namespace HelpSerralheiro
             Menu menu = new Menu();
             menu.Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            NovaVenda nv = new NovaVenda();
+            nv.Show();
+            this.Close();
+        }
     }
 }

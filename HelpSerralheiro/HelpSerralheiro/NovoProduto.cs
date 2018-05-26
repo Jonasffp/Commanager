@@ -25,9 +25,9 @@ namespace HelpSerralheiro
             string categoria = txtCategoria.Text.Trim();
             string fornecedor = txtFornecedor.Text.Trim();
             string observacoes = txtObservacoes.Text.Trim();
-            int valorCusto = Convert.ToInt32(txtValorCusto);
-            int valorVenda = Convert.ToInt32(txtValorVenda.Text);
-            int valorFrete = Convert.ToInt32(txtValorFrete.Text);
+            double valorCusto = Convert.ToDouble(txtValorCusto);
+            double valorVenda = Convert.ToDouble(txtValorVenda.Text);
+            double valorFrete = Convert.ToDouble(txtValorFrete.Text);
 
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 

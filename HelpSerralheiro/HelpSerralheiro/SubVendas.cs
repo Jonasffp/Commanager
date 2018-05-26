@@ -29,5 +29,12 @@ namespace HelpSerralheiro
             nv.Show();
             this.Close();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ConsultaVenda cons = new ConsultaVenda();
+            cons.Show();
+            this.Close();
+        }
     }
 }

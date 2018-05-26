@@ -131,5 +131,49 @@ namespace HelpSerralheiro
 
             }
         }
+
+        private void btnPesquisarCep_Click(object sender, EventArgs e)
+        {
+            if ((txtCEPFornecedor.TextLength != 9) || (txtufFornecedor.TextLength != 2))
+            {
+                MessageBox.Show("Campos de Cep ou UF estão incompletos");
+            }
+            else
+            {
+                string Config = "server=127.0.0.1;userid=root;database=cep";
+                string cep = txtCEPFornecedor.Text.Trim();
+                string UF = txtufFornecedor.Text.Trim();
+
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("SELECT * FROM " + UF + " WHERE cep = '" + cep + "';", conex);
+
+                try
+                {
+                    MySqlDataReader leitor = Query.ExecuteReader();
+                    if (leitor.HasRows)
+                    {
+                        txtNomeRuaFornecedor.Clear();
+                        txtBairroFornecedor.Clear();
+                        txtCidadeFornecedor.Clear();
+
+                        leitor.Read(); //lê a primeira row da pesquisa
+                        txtNomeRuaFornecedor.Text = leitor["logradouro"].ToString();
+                        txtBairroFornecedor.Text = leitor["bairro"].ToString();
+                        txtCidadeFornecedor.Text = leitor["cidade"].ToString();
+
+                    }
+
+                }
+
+                catch (Exception ex)
+                {
+                    ex.Message.ToString();
+                }
+
+                finally { conex.Close(); }
+            }
+        }
     }
 }

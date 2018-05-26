@@ -10,18 +10,14 @@ using MySql.Data.MySqlClient;
 
 namespace HelpSerralheiro
 {
-    public partial class ConsultaProdutosVenda : Form
+    public partial class ConsultaProdutosOrcamento : Form
     {
-        public ConsultaProdutosVenda()
+        public ConsultaProdutosOrcamento()
         {
             InitializeComponent();
         }
 
-        private void btnVoltar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-        private void ConsultaProdutosVenda_Load(object sender, EventArgs e)
+        private void ConsultaProdutosOrcamento_Load(object sender, EventArgs e)
         {
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
@@ -68,33 +64,6 @@ namespace HelpSerralheiro
             dgvProdutosVenda.DataSource = produtos;
         }
 
-        private void txtPesquisaProduto_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 13)
-            {
-                string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
-                string nome = txtPesquisaProduto.Text;
-
-                MySqlConnection conex = new MySqlConnection(Config);
-                conex.Open();
-
-                MySqlCommand Query = new MySqlCommand("SELECT * FROM produto WHERE nome LIKE '%" + nome + "%';", conex);
-                //define o tipo do comando
-                Query.CommandType = CommandType.Text;
-                //cria um dataadapter
-                MySqlDataAdapter da = new MySqlDataAdapter(Query);
-
-                //cria um objeto datatable
-                DataTable produtos = new DataTable();
-
-                //preenche o datatable via dataadapter
-                da.Fill(produtos);
-
-                //atribui o datatable ao datagridview para exibir o resultado
-                dgvProdutosVenda.DataSource = produtos;
-            }
-        }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (dgvProdutosVenda.SelectedRows.Count <= 0) { MessageBox.Show("Não há registro selecionado"); return; }
@@ -122,7 +91,7 @@ namespace HelpSerralheiro
                 Query.CommandType = CommandType.Text;
                 Query.ExecuteNonQuery();
 
-                var form = Application.OpenForms["NovaVenda"] as NovaVenda;
+                var form = Application.OpenForms["NovoOrcamento"] as NovoOrcamento;
                 if (form != null)//se encontrou o form principal aberto
                 {
                     form.btnOculto_Click(this, new EventArgs());
@@ -131,6 +100,11 @@ namespace HelpSerralheiro
                 this.Close();
 
             }
+        }
+
+        private void btnVoltar_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

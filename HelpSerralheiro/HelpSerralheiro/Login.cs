@@ -40,51 +40,28 @@ namespace HelpSerralheiro
             Query.Parameters.AddWithValue("@nome", nome);
             Query.Parameters.AddWithValue("@senha", senha);
             bool Verifica = Query.ExecuteReader().HasRows;
-
-            //MySqlConnection conex2 = new MySqlConnection(Config);
-          // // conex2.Open();
-
-            //MySqlCommand Query2 = new MySqlCommand("SELECT * FROM usuario WHERE nome LIKE '%" + nome + "%';", conex2);
-
-            //MySqlDataReader leitor = Query2.ExecuteReader();
-
-          // leitor.Read(); //lê a primeira row da pesquisa
-           // ClassInfo.TipoUsuario = leitor["tipo"].ToString();
-                
-
-
-            MySqlConnection conex2 = new MySqlConnection(Config);
-            conex2.Open();
-            MySqlCommand Query2 = new MySqlCommand("SELECT * FROM usuario WHERE usuario=" + nome + "';", conex2);
-
-                try
-
-                {
-                MySqlDataReader leitor = Query2.ExecuteReader();
-
-                    leitor.Read(); //lê a primeira row da pesquisa
-                    ClassInfo.TipoUsuario = leitor["tipo"].ToString();
-                }
-
-                 catch (Exception ex)
-                                {
-                                    ex.Message.ToString();
-                                }
-
-                finally{conex.Close();}
-
             if (Verifica == true)
             {
                 ClassInfo.Usuarioentrou = nome;
 
                 Menu menu = new Menu();
                 menu.Show();
-                Close();
+                this.Close();
             }
             else{
                 MessageBox.Show("Nome ou Senha Incorretos!");
             }
             conex.Close();
+
+                MySqlConnection conex2 = new MySqlConnection(Config);
+                conex2.Open();
+                MySqlCommand Query2 = new MySqlCommand("SELECT * FROM usuarios WHERE Usuario='" + nome + "';", conex2);
+                Query2.ExecuteNonQuery();
+                MySqlDataReader leitor = Query2.ExecuteReader();
+                leitor.Read(); //lê a primeira row da pesquisa
+                ClassInfo.TipoUsuario = leitor["Tipo"].ToString();
+                conex2.Close();
+
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

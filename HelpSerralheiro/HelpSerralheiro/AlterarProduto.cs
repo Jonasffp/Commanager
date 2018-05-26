@@ -10,9 +10,9 @@ using MySql.Data.MySqlClient;
 
 namespace HelpSerralheiro
 {
-    public partial class NovoProduto : Form
+    public partial class AlterarProduto : Form
     {
-        public NovoProduto()
+        public AlterarProduto()
         {
             InitializeComponent();
         }
@@ -26,70 +26,83 @@ namespace HelpSerralheiro
             string fornecedor = txtFornecedor.Text.Trim();
             string observacoes = txtObservacoes.Text.Trim();
 
-            if (txtNome.TextLength<1 || txtValorCusto.TextLength < 1 || txtValorFrete.TextLength < 1 || txtValorVenda.TextLength < 1)
+            if (txtNome.TextLength < 1 || txtValorCusto.TextLength < 1 || txtValorFrete.TextLength < 1 || txtValorVenda.TextLength < 1)
             {
                 MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao Nome do produto, Valor de custo, Valor de frete e Valor de venda !");
             }
             else
             {
+                int valorCusto = Convert.ToInt16(txtValorCusto.Text);
+                int valorVenda = Convert.ToInt16(txtValorVenda.Text);
+                int valorFrete = Convert.ToInt16(txtValorFrete.Text);
 
-                decimal valorCusto = Convert.ToDecimal(txtValorCusto.Text);
-                decimal valorVenda = Convert.ToDecimal(txtValorVenda.Text);
-                decimal valorFrete = Convert.ToDecimal(txtValorFrete.Text);
 
-                MessageBox.Show(""+valorCusto);
                 string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
                 MySqlConnection conex = new MySqlConnection(Config);
                 conex.Open();
-                MySqlCommand Query = new MySqlCommand("INSERT INTO produto (Nome, Unidade, Marca, Categoria, Fornecedor, ValorCusto, ValorVenda, ValorFrete, Observacoes)" + "VALUES('" + nome + "', '" + unidade + "', '" + marca + "', '" + categoria + "', '" + fornecedor + "',  @valorCusto , @valorVenda , @valorFrete,'" + observacoes + "');", conex);
-                Query.Parameters.AddWithValue("@valorCusto", valorCusto);
-                Query.Parameters.AddWithValue("@valorVenda", valorVenda);
-                Query.Parameters.AddWithValue("@valorFrete", valorFrete);
+                MySqlCommand Query = new MySqlCommand("UPDATE produto SET Nome='" + nome + "', Unidade='" + unidade + "', Marca='" + marca + "', Categoria='" + categoria + "', Fornecedor='" + fornecedor + "', Observacoes='" + observacoes + "', ValorCusto='" + valorCusto + "', ValorVenda='" + valorVenda + "', ValorFrete='" + valorFrete + "' WHERE Id=" + ClassInfo.IdProdutoGlobal + ";", conex);
                 Query.ExecuteNonQuery();
                 Query.Connection = conex;
                 if (conex.State == ConnectionState.Open)
                 {
-                    MessageBox.Show("Cadastrado com sucesso!");
+                    MessageBox.Show("Alterado com sucesso!");
+
+                    ConsultaProdutos cons = new ConsultaProdutos();
+                    cons.Show();
                     this.Close();
-                    SubProdutos sub = new SubProdutos();
-                    sub.Show();
                 }
+
                 else
                 {
-                    MessageBox.Show("Erro ao cadastrar!");
+                    MessageBox.Show("Erro ao alterar!");
                 }
                 conex.Close();
             }
         }
 
-        private void btnSair_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            SubProdutos sub = new SubProdutos();
-            sub.Show();
-        }
 
-        private void NovoProduto_Load(object sender, EventArgs e)
+        private void AlterarProduto_Load(object sender, EventArgs e)
         {
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
+
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query2 = new MySqlCommand("SELECT NomeFantasia FROM fornecedor;", conex);
-            //define o tipo do comando
-            Query2.CommandType = CommandType.Text;
-            Query2.ExecuteNonQuery();
-            
-            MySqlDataReader leitor = Query2.ExecuteReader();
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM produto WHERE id = '" + ClassInfo.IdProdutoGlobal + "';", conex);
 
-            for (int i = 0; leitor.Read() != false; i++)
+            try
+
             {
-                string ig = leitor["NomeFantasia"].ToString();
-                txtFornecedor.Items.Add(ig);
+                MySqlDataReader leitor = Query.ExecuteReader();
+
+                leitor.Read(); //lê a primeira row da pesquisa
+                txtNome.Text = leitor["Nome"].ToString();
+                txtUnidade.Text = leitor["Unidade"].ToString();
+                txtMarca.Text = leitor["Marca"].ToString();
+                txtCategoria.Text = leitor["Categoria"].ToString();
+                txtFornecedor.Text = leitor["Fornecedor"].ToString();
+                txtObservacoes.Text = leitor["Observacoes"].ToString();
+                txtValorCusto.Text = leitor["ValorCusto"].ToString();
+                txtValorVenda.Text = leitor["ValorVenda"].ToString();
+                txtValorFrete.Text = leitor["ValorFrete"].ToString();
             }
 
-            conex.Close();
+            catch (Exception ex)
+            {
+                ex.Message.ToString();
+            }
+
+            finally { conex.Close(); }
+
+        
+    }
+
+        private void btnSair_Click(object sender, EventArgs e)
+        {
+            ConsultaProdutos cons = new ConsultaProdutos();
+            cons.Show();
+            this.Close();
         }
 
         private void txtValorFrete_KeyPress(object sender, KeyPressEventArgs e)
@@ -127,13 +140,5 @@ namespace HelpSerralheiro
             }
             else { e.Handled = true; }
         }
-
-        private void textBox1_KeyPress(object sender,
-                System.Windows.Forms.KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        
     }
-    }
-    }
-
+}

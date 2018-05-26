@@ -28,32 +28,31 @@ namespace HelpSerralheiro
         {
             //Variaveis recebendo os valores dos campos
             String NomeLembrete = cbNomeLembrete.Text;
+            String Lembrete = txtLembrete.Text;
             String Visibilidade = null;
-            String Importancia = null;
-            String Data = txtData.Text;
-            String Hora = txtHora.Text;
+            string Data = Convert.ToDateTime(txtData.Text).ToString("yyyy/MM/dd");
+            string Hora = txtHora.Text;
             String Obs = txtObs.Text;
 
             /*Laço de repetição para definir qual das opções a variavel vai 
             armazenar*/
             if (rbEu.Checked) { Visibilidade = rbEu.Text; }
             if (rbTodos.Checked) { Visibilidade = rbTodos.Text; }
-            if (rbPoucoImportante.Checked) { Importancia = rbPoucoImportante.Text; }
-            if (rbNormal.Checked) { Importancia = rbNormal.Text; }
-            if (rbImportante.Checked) { Importancia = rbImportante.Text; }
-            if (rbMuitoImportante.Checked) { Importancia = rbMuitoImportante.Text; }
 
 
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO agenda (Nome, Visibilidade, Importancia, Data, Hora, Observacoes)" + "VALUES('" + NomeLembrete + "', '" + Visibilidade + "', '" + Importancia + "', '" + Data + "', '" + Hora + "', '" + Obs + "');", conex);
+            MySqlCommand Query = new MySqlCommand("INSERT INTO agenda (Lembrete, Nome, Visibilidade, Data, Hora, Observacoes)" + "VALUES('"+ Lembrete + "', '" + NomeLembrete + "', '" + Visibilidade + "', '" + Data + "', '" + Hora + "', '" + Obs + "');", conex);
             Query.ExecuteNonQuery();
             Query.Connection = conex;
             if (conex.State == ConnectionState.Open)
             {
                 MessageBox.Show("Cadastrado com sucesso!");
+                this.Close();
+                SubAgenda sub = new SubAgenda();
+                sub.Show();
             }
             else
             {
@@ -62,5 +61,7 @@ namespace HelpSerralheiro
             conex.Close();
 
         }
+
+
     }
 }

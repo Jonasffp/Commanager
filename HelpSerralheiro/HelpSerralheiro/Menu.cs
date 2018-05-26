@@ -17,7 +17,6 @@ namespace HelpSerralheiro
         public Menu()
         {
             InitializeComponent();
-
             string usuarioentrou2 = ClassInfo.Usuarioentrou;
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
             string nomeuser;
@@ -30,6 +29,8 @@ namespace HelpSerralheiro
             Object retorno = Query.ExecuteScalar();
             nomeuser = Convert.ToString(retorno);
             label2.Text = (nomeuser);
+
+           
         }
 
         private void btnFechar_Click(object sender, EventArgs e)
@@ -41,6 +42,22 @@ namespace HelpSerralheiro
         {
             lblHora.Text = DateTime.Now.ToLongTimeString();
             lbldata.Text = DateTime.Now.ToLongDateString();
+            if (ClassInfo.TipoUsuario == "Vendedor")
+            {
+                btnProdutos.Enabled = false;
+                btnFinanceiro.Enabled = false;
+                btnCadastro.Enabled = false;
+                btnFornecedores.Enabled = false;
+
+
+            }
+            if (ClassInfo.TipoUsuario == "Administrador")
+            {
+                btnFinanceiro.Enabled = false;
+            }
+            if (ClassInfo.TipoUsuario == "Avançado")
+            {
+            }
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
@@ -58,7 +75,7 @@ namespace HelpSerralheiro
         private void btnCadastro_Click(object sender, EventArgs e)
         {
             this.Close();
-            FrmCadastro cad = new FrmCadastro();
+            SubCadastro cad = new SubCadastro();
             cad.Show();
         }
 
@@ -90,27 +107,27 @@ namespace HelpSerralheiro
             this.Close();
         }
 
-        private void Menu_Load(object sender, EventArgs e)
-        {
-            MessageBox.Show(ClassInfo.TipoUsuario);
-            if (ClassInfo.TipoUsuario == "Vendedor")
-            {
-                btnProdutos.Image = null;
-                btnProdutos.Image = Properties.Resources.font_awesome_4_7_0_lock_106_0_34495e_none;
-            }
-            if (ClassInfo.TipoUsuario == "Aministrador")
-            {
-            }
-            if (ClassInfo.TipoUsuario == "Avançado")
-            {
-            }
-        }
-
         private void btnVendas_Click(object sender, EventArgs e)
         {
             SubVendas sb = new SubVendas();
             sb.Show();
             this.Close();
+        }
+
+        private void btnFinanceiro_Click(object sender, EventArgs e)
+        {
+            SubFinancas sub = new SubFinancas();
+            sub.Show();
+            this.Close();
+        }
+        private void Menu_LocationChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Menu_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }

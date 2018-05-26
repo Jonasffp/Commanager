@@ -10,63 +10,76 @@ using MySql.Data.MySqlClient;
 
 namespace HelpSerralheiro
 {
-    public partial class ConsultaProdutos : Form
+    public partial class ConsultarOrcamento : Form
     {
-        public ConsultaProdutos()
+        public ConsultarOrcamento()
         {
             InitializeComponent();
         }
 
-        private void ConsultaProdutos_Load(object sender, EventArgs e)
+        private void btnVoltar_Click(object sender, EventArgs e)
+        {
+            SubOrcamento sub = new SubOrcamento();
+            sub.Show();
+            this.Close();
+        }
+
+        private void ConsultarOrcamento_Load(object sender, EventArgs e)
         {
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
 
-            MySqlCommand Query = new MySqlCommand("SELECT * FROM produto;", conex);
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM orcamentos;", conex);
             //define o tipo do comando
             Query.CommandType = CommandType.Text;
             //cria um dataadapter
             MySqlDataAdapter da = new MySqlDataAdapter(Query);
 
             //cria um objeto datatable
-            DataTable produtos = new DataTable();
+            DataTable orcamentos = new DataTable();
 
             //preenche o datatable via dataadapter
-            da.Fill(produtos);
+            da.Fill(orcamentos);
 
             //atribui o datatable ao datagridview para exibir o resultado
-            dgvProdutos.DataSource = produtos;
+            dgvOrcamento.DataSource = orcamentos;
+
+            if (ClassInfo.TipoUsuario == "Vendedor")
+            {
+                btnAlterarRegistro.Enabled = false;
+                btnExcluirRegistro.Enabled = false;
+            }
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
         {
             string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
-            string nome = txtPesquisaProduto.Text;
+            string nome = txtCliente.Text;
 
             MySqlConnection conex = new MySqlConnection(Config);
             conex.Open();
 
-            MySqlCommand Query = new MySqlCommand("SELECT * FROM produto WHERE nome LIKE '%" + nome + "%';", conex);
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM orcamento WHERE Cliente LIKE '%" + nome + "%';", conex);
             //define o tipo do comando
             Query.CommandType = CommandType.Text;
             //cria um dataadapter
             MySqlDataAdapter da = new MySqlDataAdapter(Query);
 
             //cria um objeto datatable
-            DataTable produtos = new DataTable();
+            DataTable orcamento = new DataTable();
 
             //preenche o datatable via dataadapter
-            da.Fill(produtos);
+            da.Fill(orcamento);
 
             //atribui o datatable ao datagridview para exibir o resultado
-            dgvProdutos.DataSource = produtos;
+            dgvOrcamento.DataSource = orcamento;
         }
 
         private void btnAlterarRegistro_Click(object sender, EventArgs e)
         {
-            if (dgvProdutos.SelectedRows.Count <= 0)
+            if (dgvOrcamento.SelectedRows.Count <= 0)
             {
                 MessageBox.Show("Não há registro selecionado");
                 return;
@@ -75,10 +88,10 @@ namespace HelpSerralheiro
             if (MessageBox.Show("Deseja alterar o registro selecionado?", "Alterar - Cliente", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 // pega o valor do id na ccoluna selecionada
-                ClassInfo.IdProdutoGlobal = Convert.ToInt32(dgvProdutos.CurrentRow.Cells[0].Value);
+                ClassInfo.IdVendaGlobal = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
 
                 this.Close();
-                AlterarProduto al = new AlterarProduto();
+                AlterarOrcamento al = new AlterarOrcamento();
                 al.Show();
 
             }
@@ -86,16 +99,16 @@ namespace HelpSerralheiro
 
         private void btnExcluirRegistro_Click(object sender, EventArgs e)
         {
-            if (dgvProdutos.SelectedRows.Count <= 0)
+            if (dgvOrcamento.SelectedRows.Count <= 0)
             {
                 MessageBox.Show("Não há registro selecionado");
                 return;
 
             }
-            if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Cliente", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Orcamento", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 // pega o valor do id na ccoluna selecionada
-                int produtoId = Convert.ToInt32(dgvProdutos.CurrentRow.Cells[0].Value);
+                int orcamentoId = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
 
                 try
                 {
@@ -105,12 +118,11 @@ namespace HelpSerralheiro
                     conex.Open();
 
                     // executa a query de deletar com a variavel do id selecionado na datagrid
-                    MySqlCommand Query = new MySqlCommand("DELETE FROM produto WHERE id=" + produtoId + ";", conex);
+                    MySqlCommand Query = new MySqlCommand("DELETE FROM cliente WHERE id=" + orcamentoId + ";", conex);
                     Query.ExecuteNonQuery();
 
                     //confirmação da exclusão
-                    MessageBox.Show("Registro excluido com sucesso! " + produtoId);
-                    txtPesquisaProduto.Clear();
+                    MessageBox.Show("Registro excluido com sucesso! " + orcamentoId);
                     btnPesquisar.PerformClick();
 
                 }
@@ -123,40 +135,6 @@ namespace HelpSerralheiro
 
 
             }
-        }
-
-        private void txtPesquisaProduto_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 13)
-            {
-                string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
-                string nome = txtPesquisaProduto.Text;
-
-                MySqlConnection conex = new MySqlConnection(Config);
-                conex.Open();
-
-                MySqlCommand Query = new MySqlCommand("SELECT * FROM produto WHERE nome LIKE '%" + nome + "%';", conex);
-                //define o tipo do comando
-                Query.CommandType = CommandType.Text;
-                //cria um dataadapter
-                MySqlDataAdapter da = new MySqlDataAdapter(Query);
-
-                //cria um objeto datatable
-                DataTable produtos = new DataTable();
-
-                //preenche o datatable via dataadapter
-                da.Fill(produtos);
-
-                //atribui o datatable ao datagridview para exibir o resultado
-                dgvProdutos.DataSource = produtos;
-            }
-        }
-
-        private void btnVoltar_Click(object sender, EventArgs e)
-        {
-            SubProdutos sub = new SubProdutos();
-            sub.Show();
-            this.Close();
         }
     }
 }

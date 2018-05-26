@@ -136,5 +136,34 @@ namespace HelpSerralheiro
 
             }
         }
+
+        private void ConsultarClientes_Load(object sender, EventArgs e)
+        {
+            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+
+            MySqlConnection conex = new MySqlConnection(Config);
+            conex.Open();
+
+            MySqlCommand Query = new MySqlCommand("SELECT * FROM cliente;", conex);
+            //define o tipo do comando
+            Query.CommandType = CommandType.Text;
+            //cria um dataadapter
+            MySqlDataAdapter da = new MySqlDataAdapter(Query);
+
+            //cria um objeto datatable
+            DataTable clientes = new DataTable();
+
+            //preenche o datatable via dataadapter
+            da.Fill(clientes);
+
+            //atribui o datatable ao datagridview para exibir o resultado
+            dgvClientes.DataSource = clientes;
+
+            if (ClassInfo.TipoUsuario == "Vendedor")
+            {
+                btnAlterarRegistro.Enabled = false;
+                btnExcluirRegistro.Enabled = false;
+            }
+        }
     }
 }

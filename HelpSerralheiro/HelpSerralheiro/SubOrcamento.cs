@@ -22,5 +22,19 @@ namespace HelpSerralheiro
             Menu menu = new HelpSerralheiro.Menu();
             menu.Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            NovoOrcamento novo = new NovoOrcamento();
+            novo.Show();
+            this.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ConsultarOrcamento cons = new ConsultarOrcamento();
+            cons.Show();
+            this.Close();
+        }
     }
 }

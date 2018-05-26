@@ -30,6 +30,16 @@ namespace HelpSerralheiro
             this.Close();
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ConsultaAgendamento cons = new ConsultaAgendamento();
+            cons.Show();
+            this.Close();
+        }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

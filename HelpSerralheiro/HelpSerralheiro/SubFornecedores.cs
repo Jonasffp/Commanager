@@ -29,5 +29,17 @@ namespace HelpSerralheiro
             NovoFornecedor nv = new NovoFornecedor();
             nv.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ConsultaFornecedor cons = new ConsultaFornecedor();
+            cons.Show();
+            this.Close();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -28,5 +28,12 @@ namespace HelpSerralheiro
             NovoProduto nv = new NovoProduto();
             nv.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ConsultaProdutos cons = new ConsultaProdutos();
+            cons.Show();
+            this.Close();
+        }
     }
 }

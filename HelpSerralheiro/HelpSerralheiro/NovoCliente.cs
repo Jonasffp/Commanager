@@ -37,27 +37,37 @@ namespace HelpSerralheiro
             celular = txtCelular.Text.Trim();
             observacoes = txtObservacoes.Text.Trim();
 
-            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
-            MySqlConnection conex = new MySqlConnection(Config);
-            conex.Open();
-            MySqlCommand Query = new MySqlCommand("INSERT INTO cliente (Nome, RG, CPF, Nascimento, Celular, Telefone, Email, CEP, UF, Cidade, Rua, Numero, Bairro, Complemento, Observacoes)" + "VALUES('" + nome + "', '" + rg + "', '" + cpf + "', '" + dataNascimento + "', '" + celular + "', '" + telefone + "', '" + email + "', '" + cep + "', '" + uf + "', '" + cidade + "', '" + rua + "', '" + numerorua + "', '" + bairro + "', '" + complemento + "', '" + observacoes + "');", conex);
-            Query.ExecuteNonQuery();
-            Query.Connection = conex;
-            if (conex.State == ConnectionState.Open)
+            if (txtNome.TextLength < 1 || txtCPF.TextLength < 1 || txtRG.TextLength < 1 || txtEmail.TextLength < 1)
             {
-                MessageBox.Show("Cadastrado com sucesso!");
-                txtNome.Clear(); txtCPF.Clear(); txtRG.Clear(); txtDataNascimento.Text = Convert.ToString(DateTime.Now); txtRua.Clear(); txtBairro.Clear(); txtCidade.Clear(); txtCEP.Clear(); txtUF.Clear(); txtComplemento.Clear();txtEmail.Clear();txtTelefone.Clear(); txtCelular.Clear(); txtObservacoes.Clear();
-                this.Close();
-                SubClientes sub = new SubClientes();
-                sub.Show();
+                MessageBox.Show("Por favor, preencha adequadamente os campos referentes ao nome, CPF, RG e email !");
             }
-            
             else
             {
-                MessageBox.Show("Erro ao cadastrar!");
+
+
+                string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("INSERT INTO cliente (Nome, RG, CPF, DataNascimento, Celular, Telefone, Email, CEP, UF, Cidade, Rua, Numero, Bairro, Complemento, Observacoes)" + "VALUES('" + nome + "', '" + rg + "', '" + cpf + "', '" + dataNascimento + "', '" + celular + "', '" + telefone + "', '" + email + "', '" + cep + "', '" + uf + "', '" + cidade + "', '" + rua + "', '" + numerorua + "', '" + bairro + "', '" + complemento + "', '" + observacoes + "');", conex);
+                Query.ExecuteNonQuery();
+                Query.Connection = conex;
+                if (conex.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("Cadastrado com sucesso!");
+                    txtNome.Clear(); txtCPF.Clear(); txtRG.Clear(); txtDataNascimento.Text = Convert.ToString(DateTime.Now); txtRua.Clear(); txtBairro.Clear(); txtCidade.Clear(); txtCEP.Clear(); txtUF.Clear(); txtComplemento.Clear(); txtEmail.Clear(); txtTelefone.Clear(); txtCelular.Clear(); txtObservacoes.Clear();
+                    this.Close();
+                    SubClientes sub = new SubClientes();
+                    sub.Show();
+                }
+
+                else
+                {
+                    MessageBox.Show("Erro ao cadastrar!");
+                }
+                conex.Close();
             }
-            conex.Close();
         }
         private void txtTelefone_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -179,6 +189,50 @@ namespace HelpSerralheiro
                 txtBairro.Clear();
                 txtCidade.Clear();
 
+            }
+        }
+
+        private void btnPesquisarCep_Click(object sender, EventArgs e)
+        {
+            if ((txtCEP.TextLength == 9) && (txtUF.TextLength == 2))
+            {
+                string Config = "server=127.0.0.1;userid=root;database=cep";
+                string cep = txtCEP.Text.Trim();
+                string UF = txtUF.Text.Trim();
+
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("SELECT * FROM " + UF + " WHERE cep = '" + cep + "';", conex);
+
+                try
+                {
+                    MySqlDataReader leitor = Query.ExecuteReader();
+                    if (leitor.HasRows)
+                    {
+                        txtRua.Clear();
+                        txtBairro.Clear();
+                        txtCidade.Clear();
+
+                        leitor.Read(); //lê a primeira row da pesquisa
+                        txtRua.Text = leitor["logradouro"].ToString();
+                        txtBairro.Text = leitor["bairro"].ToString();
+                        txtCidade.Text = leitor["cidade"].ToString();
+
+                    }
+
+                }
+
+                catch (Exception ex)
+                {
+                    ex.Message.ToString();
+                }
+
+                finally { conex.Close(); }
+            }
+            else
+            {
+                MessageBox.Show("Campos de Cep ou UF estão incompletos");
             }
         }
         

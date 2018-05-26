@@ -16,7 +16,7 @@ namespace HelpSerralheiro
         {
             InitializeComponent();
         }
-        int ValorItens, ValorFrete, Desconto;
+        int ValorItens, ValorFrete, Desconto, IdProd;
 
         private void btSair_Click(object sender, EventArgs e)
         {
@@ -161,9 +161,16 @@ namespace HelpSerralheiro
             }
             if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Produto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // pega o valor do id na ccoluna selecionada
-                int IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
-
+                try
+                {
+                    // pega o valor do id na ccoluna selecionada
+                    IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
+                }
+                catch
+                {
+                    MessageBox.Show("Por favor clique sobre o produto que deseja excluir!");
+                    return;
+                }
                 try
                 {
                     //string de conexão mysql
@@ -176,7 +183,7 @@ namespace HelpSerralheiro
                     Query.ExecuteNonQuery();
 
                     //confirmação da exclusão
-                    MessageBox.Show("Registro excluido com sucesso! " + IdProd);
+                    MessageBox.Show("Registro excluido com sucesso! ");
 
                     btnOculto_Click(this, new EventArgs());
                 }

@@ -17,13 +17,20 @@ namespace HelpSerralheiro
             InitializeComponent();
             
         }
+        int IdProd;
         double ValorItens, ValorFrete, Desconto,ValorLucro,ValorCusto;
-        private void btnFinalizar_Click(object sender, EventArgs e)
+
+    private void btnFinalizar_Click(object sender, EventArgs e)
         {
+            if (txtComprador.Text == "" || txtIdComprador.Text == "")
+            {
+                MessageBox.Show("Selecionar o comprador e o vendedor para maior segurança nas vendas!");
+                return;
+            }
             if (txtValorTotal.Text == "")
             {
                  MessageBox.Show("Erro ao concluir a venda!");
-                 MessageBox.Show("É necessário escolher no mínimo um produto!");
+                 MessageBox.Show("É necessário escolher no mínimo um produto!"); 
             }    
 
             String dataVenda = Convert.ToDateTime(txtDataVenda.Text).ToString("yyyy/MM/dd");
@@ -161,8 +168,10 @@ namespace HelpSerralheiro
             }
         }
 
+
         public void btnOculto_Click(object sender, EventArgs e)
         {
+           
             ValorFrete = 0;
             ValorItens = 0;
             Desconto = 0;
@@ -188,12 +197,12 @@ namespace HelpSerralheiro
             //atribui o datatable ao datagridview para exibir o resultado
             dgvVenda.DataSource = produto;
 
-            for (int i = 0; i < dgvVenda.Rows.Count - 1; i++)
+            for (int i = 0; i < dgvVenda.Rows.Count ; i++)
             {
                
                    ValorItens += Convert.ToDouble(dgvVenda.Rows[i].Cells[6].Value);
                    ValorCusto += Convert.ToDouble(dgvVenda.Rows[i].Cells[7].Value);
-                   ValorFrete += Convert.ToDouble(dgvVenda.Rows[i].Cells[8].Value);
+                ValorFrete += Convert.ToDouble(dgvVenda.Rows[i].Cells[8].Value);
 
             }
             dgvVenda.Columns[0].Visible = false;
@@ -298,9 +307,16 @@ namespace HelpSerralheiro
             }
             if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Cliente", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // pega o valor do id na ccoluna selecionada
-                int IdProd = Convert.ToInt32(dgvVenda.CurrentRow.Cells[0].Value);
-
+                try
+                {
+                    // pega o valor do id na ccoluna selecionada
+                    IdProd = Convert.ToInt32(dgvVenda.CurrentRow.Cells[0].Value);
+                }
+                catch
+                {
+                    MessageBox.Show("Por favor clique sobre o produto que deseja excluir!");
+                    return;
+                }
                 try
                 {
                     //string de conexão mysql

@@ -17,7 +17,7 @@ namespace HelpSerralheiro
             InitializeComponent();
         }
         double ValorItens, ValorFrete, Desconto,ValorCusto,ValorLucro;
-        int idVendedor;
+        int idVendedor, IdProd;
         
         private void AlterarVenda_Load(object sender, EventArgs e)
         {
@@ -99,44 +99,53 @@ namespace HelpSerralheiro
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            String dataVenda = Convert.ToDateTime(txtDataVenda.Text).ToString("yyyy/MM/dd");
             String horaVenda = txtHoraVenda.Text.Trim();
-            int idComprador = Convert.ToInt32(txtIdComprador.Text.Trim());
             String comprador = txtComprador.Text.Trim();
             String vendedor = txtVendedor.Text.Trim();
             String dataEntrega = txtDataEntrega.Text.Trim();
             String horaEntrega = txtHoraEntrega.Text.Trim();
             String observacoes = txtObservacoes.Text.Trim();
-            double desconto = Convert.ToDouble(txtDescontos.Text.Trim());
-            double valorItens = Convert.ToDouble(txtValorItens.Text.Trim());
-            double frete = Convert.ToDouble(txtFrete.Text.Trim());
-            double valorTotal = Convert.ToDouble(txtValorTotal.Text.Trim());
-            
-            
-           
 
-            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
 
-            MySqlConnection conex = new MySqlConnection(Config);
-            conex.Open();
-            MySqlCommand Query = new MySqlCommand("UPDATE vendas SET DataVenda='" + dataVenda + "',IdComprador='"+idComprador+"', HoraVenda='" + horaVenda + "', Comprador='" + comprador + "',IdVendedor='"+idVendedor+"', Vendedor='" + vendedor + "', DataEntrega='" + dataEntrega + "', HoraEntrega='" + horaEntrega + "', Observacoes='" + observacoes + "', Desconto=" + desconto + ", ValorItens=" + valorItens + ", ValorFrete=" + frete + ", ValorTotal=" + valorTotal + ", ValorLucro="+ValorLucro+" WHERE Id=" + ClassInfo.IdVendaGlobal + ";", conex);
-            Query.ExecuteNonQuery();
-            Query.Connection = conex;
-
-            if (conex.State == ConnectionState.Open)
+            if (txtComprador.Text == "" || txtIdComprador.Text == "")
             {
-                MessageBox.Show("Alterado com sucesso! "+idVendedor);
-
-                this.Close();
-                ConsultaVenda sub = new ConsultaVenda();
-                sub.Show();
+                MessageBox.Show("Selecionar o comprador e o vendedor para maior segurança nas vendas!");
+                return;
             }
-
             else
             {
-                MessageBox.Show("Erro ao alterar!");
+
+                int idComprador = Convert.ToInt32(txtIdComprador.Text.Trim());
+                double desconto = Convert.ToDouble(txtDescontos.Text.Trim());
+                double valorItens = Convert.ToDouble(txtValorItens.Text.Trim());
+                double frete = Convert.ToDouble(txtFrete.Text.Trim());
+                double valorTotal = Convert.ToDouble(txtValorTotal.Text.Trim());
+                String dataVenda = Convert.ToDateTime(txtDataVenda.Text).ToString("yyyy/MM/dd");
+
+
+                string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+
+                MySqlConnection conex = new MySqlConnection(Config);
+                conex.Open();
+                MySqlCommand Query = new MySqlCommand("UPDATE vendas SET DataVenda='" + dataVenda + "',IdComprador='" + idComprador + "', HoraVenda='" + horaVenda + "', Comprador='" + comprador + "',IdVendedor='" + idVendedor + "', Vendedor='" + vendedor + "', DataEntrega='" + dataEntrega + "', HoraEntrega='" + horaEntrega + "', Observacoes='" + observacoes + "', Desconto=" + desconto + ", ValorItens=" + valorItens + ", ValorFrete=" + frete + ", ValorTotal=" + valorTotal + ", ValorLucro=" + ValorLucro + " WHERE Id=" + ClassInfo.IdVendaGlobal + ";", conex);
+                Query.ExecuteNonQuery();
+                Query.Connection = conex;
+
+                if (conex.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("Alterado com sucesso! " + idVendedor);
+
+                    this.Close();
+                    ConsultaVenda sub = new ConsultaVenda();
+                    sub.Show();
+                }
+
+                else
+                {
+                    MessageBox.Show("Erro ao alterar!");
+                }
+                conex.Close();
             }
-            conex.Close();
         }
 
         private void btExcluirProduto_Click(object sender, EventArgs e)
@@ -149,9 +158,16 @@ namespace HelpSerralheiro
             }
             if (MessageBox.Show("Deseja excluir o registro selecionado?", "Excluir - Cliente", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // pega o valor do id na ccoluna selecionada
-                int IdProd = Convert.ToInt32(dgvVenda.CurrentRow.Cells[0].Value);
-
+                try
+                {
+                    // pega o valor do id na ccoluna selecionada
+                    IdProd = Convert.ToInt32(dgvVenda.CurrentRow.Cells[0].Value);
+                }
+                catch
+                {
+                    MessageBox.Show("Por favor clique sobre o produto que deseja excluir!");
+                    return;
+                }
                 try
                 {
                     //string de conexão mysql
@@ -211,7 +227,7 @@ namespace HelpSerralheiro
             //atribui o datatable ao datagridview para exibir o resultado
             dgvVenda.DataSource = produto;
 
-            for (int i = 0; i < dgvVenda.Rows.Count - 1; i++)
+            for (int i = 0; i < dgvVenda.Rows.Count; i++)
             {
 
                 ValorItens += Convert.ToDouble(dgvVenda.Rows[i].Cells[7].Value);

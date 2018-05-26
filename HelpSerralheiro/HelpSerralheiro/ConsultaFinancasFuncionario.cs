@@ -50,7 +50,7 @@ namespace HelpSerralheiro
 
                     //confirmação da exclusão
                     MessageBox.Show("Registro excluido com sucesso! " + despesaId);
-                    btPesquisar.PerformClick();
+                    btnPesquisar.PerformClick();
                 }
                 catch (Exception)
                 {

@@ -42,6 +42,7 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutosVenda.DataSource = produtos;
+            dgvProdutosVenda.Columns[6].Visible = false;
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
@@ -66,6 +67,7 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutosVenda.DataSource = produtos;
+            dgvProdutosVenda.Columns[6].Visible = false;
         }
 
         private void txtPesquisaProduto_KeyPress(object sender, KeyPressEventArgs e)
@@ -123,10 +125,9 @@ namespace HelpSerralheiro
                 Query.ExecuteNonQuery();
 
                 var form = Application.OpenForms["NovaVenda"] as NovaVenda;
-                if (form != null)//se encontrou o form principal aberto
-                {
-                    form.btnOculto_Click(this, new EventArgs());
-                }
+               
+                form.btnOculto_Click(this, new EventArgs());
+
 
                 this.Close();
 

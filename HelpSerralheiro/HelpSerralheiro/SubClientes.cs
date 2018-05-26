@@ -30,5 +30,11 @@ namespace HelpSerralheiro
             ConsultarClientes cc = new ConsultarClientes();
             cc.Show();
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lblHora.Text = DateTime.Now.ToLongTimeString();
+            lbldata.Text = DateTime.Now.ToLongDateString();
+        }
     }
 }

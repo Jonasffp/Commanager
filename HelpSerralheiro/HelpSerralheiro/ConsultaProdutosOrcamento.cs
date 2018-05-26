@@ -38,6 +38,8 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutosVenda.DataSource = produtos;
+            dgvProdutosVenda.Columns[6].Visible = false;
+
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
@@ -62,6 +64,8 @@ namespace HelpSerralheiro
 
             //atribui o datatable ao datagridview para exibir o resultado
             dgvProdutosVenda.DataSource = produtos;
+            dgvProdutosVenda.Columns[6].Visible = false;
+
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

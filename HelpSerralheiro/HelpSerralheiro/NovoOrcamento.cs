@@ -79,7 +79,9 @@ namespace HelpSerralheiro
                     // pega o valor do id na ccoluna selecionada
                     IdProd = Convert.ToInt32(dgvOrcamento.CurrentRow.Cells[0].Value);
                 }
-                catch { MessageBox.Show("Por favor clique sobre o produto que deseja excluir do orçamento!"); }
+                catch { MessageBox.Show("Por favor clique sobre o produto que deseja excluir do orçamento!");
+                    return;
+                }
 
                 try
                 {
@@ -136,7 +138,7 @@ namespace HelpSerralheiro
             //atribui o datatable ao datagridview para exibir o resultado
             dgvOrcamento.DataSource = produto;
 
-            for (int i = 0; i < dgvOrcamento.Rows.Count - 1; i++)
+            for (int i = 0; i < dgvOrcamento.Rows.Count; i++)
             {
 
                 ValorItens += Convert.ToDouble(dgvOrcamento.Rows[i].Cells[6].Value);

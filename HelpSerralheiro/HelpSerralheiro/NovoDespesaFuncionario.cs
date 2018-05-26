@@ -25,7 +25,7 @@ namespace HelpSerralheiro
 
         private void btSalvar_Click(object sender, EventArgs e)
         {
-            string nome = txtNome.Text;
+            string nome = txtVendedor.Text;
             string salario = txtSalario.Text;
             string DataPagamento = Convert.ToDateTime(txtDataPagamento.Text).ToString("yyyy/MM/dd");
             string observacoes = txtObservacoes.Text;
@@ -48,6 +48,28 @@ namespace HelpSerralheiro
             {
                 MessageBox.Show("Erro ao cadastrar!");
             }
+            conex.Close();
+        }
+
+        private void NovoDespesaFuncionario_Load(object sender, EventArgs e)
+        {
+            string Config = "server=127.0.0.1;userid=root;database=bd_commanager";
+
+            MySqlConnection conex = new MySqlConnection(Config);
+            conex.Open();
+            MySqlCommand Query2 = new MySqlCommand("SELECT Nome FROM funcionario;", conex);
+            //define o tipo do comando
+            Query2.CommandType = CommandType.Text;
+            Query2.ExecuteNonQuery();
+
+            MySqlDataReader leitor2 = Query2.ExecuteReader();
+
+            for (int i = 0; leitor2.Read() != false; i++)
+            {
+                string ig = leitor2["Nome"].ToString();
+                txtVendedor.Items.Add(ig);
+            }
+
             conex.Close();
         }
     }
